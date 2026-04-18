@@ -1,0 +1,300 @@
+2026-03-28 17:09:05,388 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:05,388 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:07,390 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0004)
+2026-03-28 17:09:07,391 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0007)
+2026-03-28 17:09:07,391 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "read of closed file"
+2026-03-28 17:09:07,391 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,391 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,391 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,391 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:07,392 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,394 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0002)
+2026-03-28 17:09:09,395 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0004)
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "read of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,395 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,396 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:09,397 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:11,399 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0002)
+2026-03-28 17:09:11,400 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0004)
+2026-03-28 17:09:11,400 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "read of closed file"
+2026-03-28 17:09:13,085 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:13,403 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0002)
+2026-03-28 17:09:13,404 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0003)
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,404 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,405 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,406 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,406 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,406 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,406 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,406 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:13,407 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:14,359 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:15,324 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:09:15,409 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0002)
+2026-03-28 17:09:15,409 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0001)
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,409 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,410 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:15,411 [INFO] stem: Error while receiving a control message (SocketClosed): empty socket content
+2026-03-28 17:09:17,413 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0002)
+2026-03-28 17:09:17,413 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0001)
+2026-03-28 17:09:17,413 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "read of closed file"
+2026-03-28 17:09:17,413 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,414 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,415 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,416 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:17,417 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:19,419 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0002)
+2026-03-28 17:09:19,420 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0004)
+2026-03-28 17:09:19,420 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "read of closed file"
+2026-03-28 17:09:19,420 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "peek of closed file"
+2026-03-28 17:09:21,423 [DEBUG] stem: GETCONF __owningcontrollerprocess (runtime: 0.0005)
+2026-03-28 17:09:21,424 [DEBUG] stem: GETINFO status/bootstrap-phase (runtime: 0.0003)
+2026-03-28 17:09:21,424 [INFO] tor_manager: Tor connected (100%)!
+2026-03-28 17:09:21,424 [INFO] stem: Error while receiving a control message (SocketClosed): received exception "read of closed file"
+2026-03-28 17:09:21,927 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:09:22,142 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:09:22,342 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:09:25,007 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:25,397 [INFO] __main__: binary_location set to: /usr/bin/chromium-browser
+2026-03-28 17:09:25,616 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:25,650 [WARNING] __main__: Browser launch attempt 1/3 failed: Message: Service /snap/bin/chromium.chromedriver unexpectedly exited. Status code was: 1
+
+2026-03-28 17:09:25,650 [INFO] __main__: Waiting 8s before retry...
+2026-03-28 17:09:26,330 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:09:36,429 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:36,683 [INFO] __main__: binary_location set to: /usr/bin/chromium-browser
+2026-03-28 17:09:36,867 [WARNING] __main__: Browser launch attempt 2/3 failed: Message: Service /snap/bin/chromium.chromedriver unexpectedly exited. Status code was: 1
+
+2026-03-28 17:09:36,867 [INFO] __main__: Waiting 16s before retry...
+2026-03-28 17:09:41,684 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:42,677 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:09:52,334 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:09:56,109 [INFO] __main__: binary_location set to: /usr/bin/chromium-browser
+2026-03-28 17:09:56,293 [WARNING] __main__: Browser launch attempt 3/3 failed: Message: Service /snap/bin/chromium.chromedriver unexpectedly exited. Status code was: 1
+
+2026-03-28 17:09:56,293 [ERROR] __main__: Driver launch error: Browser 3 attempts ke baad bhi launch nahi hua: Message: Service /snap/bin/chromium.chromedriver unexpectedly exited. Status code was: 1
+
+
+ChromeDriver log (last 20 lines):
+/system.slice/visitor-bot.service is not a snap cgroup for tag snap.chromium.chromedriver
+2026-03-28 17:09:56,773 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:10:02,480 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:10:12,625 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:10:14,823 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+2026-03-28 17:10:15,865 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+2026-03-28 17:10:25,012 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"

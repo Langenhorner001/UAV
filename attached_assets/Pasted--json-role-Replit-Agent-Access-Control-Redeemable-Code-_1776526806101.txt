@@ -1,0 +1,363 @@
+```json
+{
+  "role": "Replit Agent - Access Control & Redeemable Code System",
+  "priority": "CRITICAL",
+  "task": "Build a complete multi-tier access control system where ONLY the OWNER can grant access. SUDO users get elevated privileges. Owner can generate redeemable codes via /code command that users redeem to become Premium users",
+
+  "context": {
+    "scope": "End-to-end access management: role hierarchy, permission gates on every command, code generation/redemption, persistent storage, admin tools",
+    "goal": "Bot becomes invite-only with controlled access — no random user can use it without owner's permission or a valid redeem code",
+    "preserve": "Existing bot functionality remains intact, only gated behind access checks"
+  },
+
+  "role_hierarchy": {
+    "OWNER": {
+      "level": 100,
+      "description": "Bot owner — supreme authority, hardcoded via OWNER_ID in .env",
+      "permissions": [
+        "All bot features",
+        "Add/remove SUDO users",
+        "Add/remove Premium users directly",
+        "Generate redeemable codes",
+        "View all codes (active/used/expired)",
+        "Revoke codes",
+        "Ban/unban any user",
+        "View full user list and stats",
+        "Bypass all restrictions"
+      ]
+    },
+    "SUDO": {
+      "level": 50,
+      "description": "Trusted admins appointed by owner",
+      "permissions": [
+        "All bot features",
+        "Add/remove Premium users",
+        "Generate redeemable codes (with limits)",
+        "View Premium user list",
+        "Cannot modify other SUDO users",
+        "Cannot remove the OWNER"
+      ]
+    },
+    "PREMIUM": {
+      "level": 10,
+      "description": "Authorized users with full bot access",
+      "permissions": [
+        "Use all bot commands and features",
+        "Cannot manage other users",
+        "Cannot generate codes"
+      ]
+    },
+    "GUEST": {
+      "level": 0,
+      "description": "Default — anyone who starts the bot without access",
+      "permissions": [
+        "/start (shows access denied + redeem instructions)",
+        "/redeem <code> (to gain Premium access)",
+        "/help (limited)",
+        "Cannot use any other feature"
+      ]
+    }
+  },
+
+  "phase_1_database_schema": {
+    "users_table": {
+      "fields": [
+        "user_id (PRIMARY KEY, INTEGER)",
+        "username (TEXT)",
+        "first_name (TEXT)",
+        "role (TEXT) — 'OWNER' | 'SUDO' | 'PREMIUM' | 'GUEST'",
+        "added_by (INTEGER) — user_id of who granted access",
+        "added_at (TIMESTAMP)",
+        "expires_at (TIMESTAMP, NULL for permanent)",
+        "is_banned (BOOLEAN, default FALSE)",
+        "redeem_code_used (TEXT, NULL)",
+        "last_active (TIMESTAMP)"
+      ]
+    },
+    "redeem_codes_table": {
+      "fields": [
+        "code (PRIMARY KEY, TEXT) — unique code string",
+        "created_by (INTEGER) — owner/sudo user_id",
+        "created_at (TIMESTAMP)",
+        "duration_days (INTEGER) — 0 = permanent",
+        "max_uses (INTEGER, default 1)",
+        "current_uses (INTEGER, default 0)",
+        "is_active (BOOLEAN, default TRUE)",
+        "expires_at (TIMESTAMP, NULL = no expiry)",
+        "redeemed_by (TEXT) — JSON array of user_ids who redeemed",
+        "notes (TEXT) — optional label/description"
+      ]
+    },
+    "storage_options": [
+      "SQLite (recommended for Replit — simple, file-based)",
+      "JSON file (acceptable for small scale)",
+      "PostgreSQL/MongoDB (if bot already uses one)"
+    ]
+  },
+
+  "phase_2_commands": {
+    "owner_only_commands": {
+      "/addsudo <user_id|reply>": "Promote user to SUDO",
+      "/removesudo <user_id|reply>": "Demote SUDO to GUEST",
+      "/sudolist": "List all SUDO users",
+      "/ban <user_id|reply>": "Ban user from bot",
+      "/unban <user_id|reply>": "Unban user"
+    },
+    "owner_and_sudo_commands": {
+      "/addpremium <user_id|reply> [days]": "Grant Premium access (days optional, default permanent)",
+      "/removepremium <user_id|reply>": "Revoke Premium access",
+      "/premiumlist": "List all Premium users with expiry dates",
+      "/code <duration_days> [max_uses] [notes]": "Generate redeemable code\nExample: /code 30 1 'For John' → 30-day code, 1 use",
+      "/codes": "List all codes (active/used/expired)",
+      "/revokecode <code>": "Deactivate a code",
+      "/userinfo <user_id|reply>": "Show user's role, status, expiry",
+      "/stats": "Bot usage statistics"
+    },
+    "all_users_commands": {
+      "/redeem <code>": "Redeem a code to gain Premium access",
+      "/myaccess": "Check own role and access expiry",
+      "/start": "Welcome (shows access status)",
+      "/help": "Help menu (filtered by role)"
+    }
+  },
+
+  "phase_3_code_generation_logic": {
+    "code_format": {
+      "pattern": "BOTNAME-XXXX-XXXX-XXXX (alphanumeric uppercase)",
+      "example": "PREM-A7K2-9XB4-LM3Q",
+      "length": "16 chars + prefix",
+      "uniqueness": "Check DB before saving — regenerate if collision"
+    },
+    "code_command_flow": {
+      "syntax": "/code <duration_days> [max_uses] [notes]",
+      "examples": [
+        "/code 30 → 30-day premium, 1 use, no notes",
+        "/code 7 5 → 7-day premium, 5 uses",
+        "/code 0 1 'Lifetime VIP' → permanent, 1 use, labeled",
+        "/code 90 10 'Promo Campaign' → 90-day, 10 uses, labeled"
+      ],
+      "response_format": [
+        "╭━━━━━━━━━━━━━━━━━━━━━╮",
+        "   ✅ *CODE GENERATED*",
+        "╰━━━━━━━━━━━━━━━━━━━━━╯",
+        "",
+        "🎟 *Code:* `PREM-A7K2-9XB4-LM3Q`",
+        "⏱ *Duration:* 30 days",
+        "🔢 *Max Uses:* 1",
+        "📝 *Notes:* For John",
+        "📅 *Created:* 2025-01-15",
+        "",
+        "_Tap code to copy. Share with user._",
+        "_User redeems via:_ `/redeem PREM-A7K2-9XB4-LM3Q`"
+      ]
+    }
+  },
+
+  "phase_4_redemption_logic": {
+    "command": "/redeem <code>",
+    "validation_steps": [
+      "1. Check if code exists in DB",
+      "2. Check if code is_active = TRUE",
+      "3. Check if current_uses < max_uses",
+      "4. Check if user already redeemed this code (prevent duplicate)",
+      "5. Check if user is already PREMIUM/SUDO/OWNER (no need to redeem)",
+      "6. Check if user is banned",
+      "7. If all pass → grant Premium with duration_days from code",
+      "8. Increment current_uses, add user_id to redeemed_by array",
+      "9. If current_uses == max_uses → set is_active = FALSE"
+    ],
+    "success_message": [
+      "╭━━━━━━━━━━━━━━━━━━━━━╮",
+      "   🎉 *CODE REDEEMED*",
+      "╰━━━━━━━━━━━━━━━━━━━━━╯",
+      "",
+      "✅ *Welcome to Premium!*",
+      "💎 *Access:* Premium User",
+      "⏱ *Valid for:* 30 days",
+      "📅 *Expires:* 2025-02-14",
+      "",
+      "_Enjoy full access to all features!_",
+      "_Use /help to explore commands._"
+    ],
+    "error_messages": {
+      "invalid": "❌ Invalid code. Please check and try again.",
+      "expired": "⌛ This code has expired.",
+      "exhausted": "🔒 This code has reached its usage limit.",
+      "already_redeemed": "⚠️ You've already redeemed this code.",
+      "already_premium": "💎 You're already a Premium user! No need to redeem.",
+      "banned": "🚫 You are banned from this bot."
+    }
+  },
+
+  "phase_5_access_gate_implementation": {
+    "decorator_approach": [
+      "Create @owner_only, @sudo_or_higher, @premium_or_higher decorators",
+      "Apply to every command handler based on required level",
+      "Decorator checks user's role from DB and blocks if insufficient"
+    ],
+    "middleware_approach": [
+      "Add global middleware that runs before every handler",
+      "Checks user role and command requirements",
+      "Auto-rejects with friendly message if access denied"
+    ],
+    "guest_user_experience": {
+      "when_guest_sends_command": [
+        "Block command execution",
+        "Send access denied message with redeem instructions"
+      ],
+      "denied_message": [
+        "╭━━━━━━━━━━━━━━━━━━━━━╮",
+        "   🔒 *ACCESS RESTRICTED*",
+        "╰━━━━━━━━━━━━━━━━━━━━━╯",
+        "",
+        "_This bot is invite-only._",
+        "",
+        "🎟 *Have a code?*",
+        "Use: `/redeem YOUR-CODE`",
+        "",
+        "💬 *Need access?*",
+        "Contact owner: @owner_username",
+        "",
+        "_Your ID:_ `123456789`",
+        "_(Share this with owner to get access)_"
+      ],
+      "inline_buttons": [
+        "[🎟 Redeem Code] [💬 Contact Owner]",
+        "[ℹ️ About Bot] [❌ Close]"
+      ]
+    }
+  },
+
+  "phase_6_expiry_handling": {
+    "background_task": [
+      "Periodic check (every hour) for expired Premium users",
+      "Auto-downgrade expired users from PREMIUM to GUEST",
+      "Send expiry notification: 'Your Premium has expired. Renew via /redeem'",
+      "Log all expirations for owner visibility"
+    ],
+    "on_command_check": [
+      "Every command also checks expiry in real-time",
+      "If expired during session → immediate downgrade + notification"
+    ]
+  },
+
+  "phase_7_security_safeguards": [
+    "OWNER_ID stored in .env (never hardcoded)",
+    "Validate user_id input (must be integer)",
+    "Prevent owner from being demoted/banned",
+    "Prevent SUDO from modifying other SUDO users",
+    "Rate limit /redeem (max 5 attempts per hour per user)",
+    "Log all role changes and code redemptions in audit log",
+    "Sanitize all user inputs (prevent injection)",
+    "Use parameterized DB queries always",
+    "Codes are case-insensitive on input but stored uppercase"
+  ],
+
+  "phase_8_inline_ui_integration": {
+    "owner_panel_button": "👑 Owner Panel (visible only to owner)",
+    "owner_panel_buttons": [
+      "[👥 Manage Users] [🛡 SUDO List]",
+      "[💎 Premium List] [🎟 Generate Code]",
+      "[📋 All Codes] [📊 Stats]",
+      "[🚫 Banned Users] [🔙 Back]"
+    ],
+    "sudo_panel_button": "🛡 SUDO Panel (visible to SUDO + Owner)",
+    "sudo_panel_buttons": [
+      "[💎 Add Premium] [🎟 Generate Code]",
+      "[📋 My Codes] [👥 Premium List]",
+      "[🔙 Back]"
+    ],
+    "code_generation_via_buttons": [
+      "Step-by-step interactive code generation",
+      "Buttons for duration: [7 days] [30 days] [90 days] [Lifetime]",
+      "Buttons for uses: [1 use] [5 uses] [10 uses] [Unlimited]",
+      "Optional notes via text input",
+      "Final confirmation before generating"
+    ]
+  },
+
+  "phase_9_implementation_workflow": [
+    "1. Setup .env: OWNER_ID, BOT_TOKEN",
+    "2. Create database schema (SQLite recommended)",
+    "3. Create models/db layer (users, codes CRUD operations)",
+    "4. Create role/permission decorators or middleware",
+    "5. Apply access gates to ALL existing command handlers",
+    "6. Implement /code generation command with validation",
+    "7. Implement /redeem command with full validation flow",
+    "8. Implement owner/sudo management commands",
+    "9. Implement /myaccess and access-denied UX for guests",
+    "10. Add background task for expiry checking",
+    "11. Add inline owner/sudo panels with interactive buttons",
+    "12. Add audit logging for all sensitive actions",
+    "13. Update /help to filter commands by user role",
+    "14. Test complete flow: code generation → share → redeem → access → expiry"
+  ],
+
+  "phase_10_file_structure": {
+    "suggested": [
+      "models/database.py — DB connection + schema init",
+      "models/users.py — User CRUD operations",
+      "models/codes.py — Code CRUD operations",
+      "utils/permissions.py — Role decorators/middleware",
+      "utils/code_generator.py — Unique code generation logic",
+      "handlers/owner.py — Owner-only commands",
+      "handlers/sudo.py — SUDO commands",
+      "handlers/redeem.py — /redeem and /myaccess",
+      "handlers/access_panels.py — Interactive owner/sudo panels",
+      "tasks/expiry_checker.py — Background expiry task",
+      "texts/access_messages.py — All access-related message templates"
+    ]
+  },
+
+  "constraints": [
+    "OWNER_ID must come from .env, never hardcoded",
+    "All existing commands must work for authorized users — only add gates",
+    "Don't break existing functionality — wrap, don't replace",
+    "Use parameterized queries always (no SQL injection)",
+    "All sensitive actions must be logged",
+    "Owner can NEVER be banned/demoted by anyone",
+    "Codes must be cryptographically unpredictable (use secrets module)",
+    "Persist data — DB must survive restarts"
+  ],
+
+  "deliverables": [
+    "1. Complete database schema with users + codes tables",
+    "2. Role-based permission system (OWNER > SUDO > PREMIUM > GUEST)",
+    "3. /code command for owner/sudo to generate redeemable codes",
+    "4. /redeem command with full validation",
+    "5. All management commands (addsudo, addpremium, ban, etc.)",
+    "6. Access gates on every existing bot command",
+    "7. Interactive inline panels for owner and SUDO",
+    "8. Background expiry checker",
+    "9. Audit log for all role/code changes",
+    "10. Updated /help filtered by role",
+    "11. Premium access denied UX for guests with redeem button",
+    "12. ACCESS_SYSTEM.md documenting the full system"
+  ],
+
+  "verification": [
+    "Owner can use all commands",
+    "SUDO can manage Premium but not other SUDO",
+    "Premium can use bot but cannot manage users",
+    "Guest is blocked from all features except /redeem and /start",
+    "/code generates unique, valid, redeemable codes",
+    "/redeem successfully grants Premium access",
+    "Expired Premium auto-downgrades to Guest",
+    "Banned users cannot use any command",
+    "Codes can be revoked and stop working immediately",
+    "Database persists across bot restarts",
+    "All sensitive actions appear in audit log"
+  ],
+
+  "success_criteria": [
+    "Bot is fully invite-only and secure",
+    "Owner has complete control over who can use bot",
+    "Code generation/redemption flow is smooth and user-friendly",
+    "Zero unauthorized access possible",
+    "All operations logged for accountability",
+    "UI is consistent with previously enhanced inline buttons style"
+  ],
+
+  "on_completion": "Report with: files created/modified, DB schema confirmation, sample generated code, test redemption flow result, list of all gated commands, and screenshot/preview of owner panel + access denied screen."
+}
+```

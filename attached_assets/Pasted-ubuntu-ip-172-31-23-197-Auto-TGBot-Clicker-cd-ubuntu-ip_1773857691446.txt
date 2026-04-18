@@ -1,0 +1,55 @@
+ubuntu@ip-172-31-23-197:~/Auto-TGBot-Clicker$ cd
+ubuntu@ip-172-31-23-197:~$ cd ~/Auto-TGBot-Clicker
+
+# 1. Latest code lao
+git pull origin main
+
+# 2. .env file move karo (telegram-bot se root mein)
+cp telegram-bot/.env .env 2>/dev/null || true
+
+# 3. Venv root mein banana
+python3.11 -m venv venv
+venv/bin/pip install --upgrade pip setuptools wheel -q
+venv/bin/pip install -r requirements.txt -q
+
+# 4. Systemd service update karo
+sudo sed -i 's|/telegram-bot||g' /etc/systemd/system/visitor-bot.service
+sudo systemctl daemon-reload
+sudo systemctl restart visitor-bot
+
+# 5. Logs check karo
+sudo journalctl -u visitor-bot -f
+remote: Enumerating objects: 31, done.
+remote: Counting objects: 100% (31/31), done.
+remote: Compressing objects: 100% (13/13), done.
+remote: Total 25 (delta 13), reused 23 (delta 12), pack-reused 0 (from 0)
+Unpacking objects: 100% (25/25), 157.40 KiB | 818.00 KiB/s, done.
+From https://github.com/hiaistudent-jpg/Auto-TGBot-Clicker
+ * branch            main       -> FETCH_HEAD
+   89d3e15..c850aae  main       -> origin/main
+Updating 89d3e15..c850aae
+error: Your local changes to the following files would be overwritten by merge:
+        telegram-bot/bot_data.db
+        telegram-bot/setup.sh
+Please commit your changes or stash them before you merge.
+Aborting
+ERROR: Could not open requirements file: [Errno 2] No such file or directory: 'requirements.txt'
+Mar 18 18:14:31 ip-172-31-23-197 systemd[1]: visitor-bot.service: Current command vanished from the unit file, execution of the command list won't be resumed.
+Mar 18 18:14:31 ip-172-31-23-197 systemd[1]: Stopping URL Auto Visitor Telegram Bot...
+Mar 18 18:14:31 ip-172-31-23-197 visitor-bot[19316]: 2026-03-18 18:14:31,568 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+Mar 18 18:14:31 ip-172-31-23-197 visitor-bot[19316]: 2026-03-18 18:14:31,569 [INFO] telegram.ext.Application: Application is stopping. This might take a moment.
+Mar 18 18:14:31 ip-172-31-23-197 visitor-bot[19316]: 2026-03-18 18:14:31,569 [INFO] telegram.ext.Application: Application.stop() complete
+Mar 18 18:14:32 ip-172-31-23-197 visitor-bot[19316]: 2026-03-18 18:14:32,056 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+Mar 18 18:14:32 ip-172-31-23-197 systemd[1]: visitor-bot.service: Deactivated successfully.
+Mar 18 18:14:32 ip-172-31-23-197 systemd[1]: Stopped URL Auto Visitor Telegram Bot.
+Mar 18 18:14:32 ip-172-31-23-197 systemd[1]: visitor-bot.service: Consumed 15.056s CPU time.
+Mar 18 18:14:32 ip-172-31-23-197 systemd[1]: Started URL Auto Visitor Telegram Bot.
+Mar 18 18:14:32 ip-172-31-23-197 visitor-bot[19459]: /home/ubuntu/Auto-TGBot-Clicker/venv/bin/python3: can't open file '/home/ubuntu/Auto-TGBot-Clicker/bot.py': [Errno 2] No such file or directory
+Mar 18 18:14:32 ip-172-31-23-197 systemd[1]: visitor-bot.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+Mar 18 18:14:32 ip-172-31-23-197 systemd[1]: visitor-bot.service: Failed with result 'exit-code'.
+Mar 18 18:14:42 ip-172-31-23-197 systemd[1]: visitor-bot.service: Scheduled restart job, restart counter is at 1.
+Mar 18 18:14:42 ip-172-31-23-197 systemd[1]: Stopped URL Auto Visitor Telegram Bot.
+Mar 18 18:14:42 ip-172-31-23-197 systemd[1]: Started URL Auto Visitor Telegram Bot.
+Mar 18 18:14:42 ip-172-31-23-197 visitor-bot[19464]: /home/ubuntu/Auto-TGBot-Clicker/venv/bin/python3: can't open file '/home/ubuntu/Auto-TGBot-Clicker/bot.py': [Errno 2] No such file or directory
+Mar 18 18:14:42 ip-172-31-23-197 systemd[1]: visitor-bot.service: Main process exited, code=exited, status=2/INVALIDARGUMENT
+Mar 18 18:14:42 ip-172-31-23-197 systemd[1]: visitor-bot.service: Failed with result 'exit-code'.

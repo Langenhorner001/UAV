@@ -1,0 +1,25 @@
+ubuntu@ip-172-31-23-197:~$ ls
+Auto-TGBot-Clicker
+ubuntu@ip-172-31-23-197:~$ cd Auto-TGBot-Clicker/
+ubuntu@ip-172-31-23-197:~/Auto-TGBot-Clicker$
+ubuntu@ip-172-31-23-197:~/Auto-TGBot-Clicker$ ~/Auto-TGBot-Clicker/venv/bin/pip                                              install setuptools --upgrade
+sudo systemctl restart visitor-bot
+sudo journalctl -u visitor-bot -f
+Requirement already satisfied: setuptools in ./venv/lib/python3.11/site-packages                                              (82.0.1)
+Mar 18 18:22:19 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:22:19,559 [IN                                             FO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-y                                             bsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+Mar 18 18:22:28 ip-172-31-23-197 systemd[1]: Stopping URL Auto Visitor Telegram                                              Bot...
+Mar 18 18:22:28 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:22:28,779 [IN                                             FO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-y                                             bsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+Mar 18 18:22:28 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:22:28,780 [IN                                             FO] telegram.ext.Application: Application is stopping. This might take a moment.
+Mar 18 18:22:28 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:22:28,780 [IN                                             FO] telegram.ext.Application: Application.stop() complete
+Mar 18 18:22:29 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:22:29,292 [IN                                             FO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-y                                             bsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+Mar 18 18:22:29 ip-172-31-23-197 systemd[1]: visitor-bot.service: Deactivated su                                             ccessfully.
+Mar 18 18:22:29 ip-172-31-23-197 systemd[1]: Stopped URL Auto Visitor Telegram B                                             ot.
+Mar 18 18:22:29 ip-172-31-23-197 systemd[1]: visitor-bot.service: Consumed 2.179                                             s CPU time.
+Mar 18 18:22:29 ip-172-31-23-197 systemd[1]: Started URL Auto Visitor Telegram B                                             ot.
+Mar 18 18:22:29 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:29,725 [IN                                             FO] keep_alive: Self-pinger disabled (SELF_PING_ENABLED=false) — not needed on E                                             C2
+Mar 18 18:22:29 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:29,726 [IN                                             FO] db: Database initialized.
+Mar 18 18:22:29 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:29,942 [IN                                             FO] __main__: Bot start ho gaya...
+Mar 18 18:22:30 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:30,391 [IN                                             FO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-y                                             bsvpiBoWGzt2dBvY_n6UYXPI/getMe "HTTP/1.1 200 OK"
+Mar 18 18:22:30 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:30,575 [IN                                             FO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-y                                             bsvpiBoWGzt2dBvY_n6UYXPI/sendMessage "HTTP/1.1 200 OK"
+Mar 18 18:22:30 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:30,725 [IN                                             FO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-y                                             bsvpiBoWGzt2dBvY_n6UYXPI/deleteWebhook "HTTP/1.1 200 OK"
+Mar 18 18:22:30 ip-172-31-23-197 visitor-bot[19647]: 2026-03-18 18:22:30,727 [IN                                             FO] telegram.ext.Application: Application started

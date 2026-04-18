@@ -1,0 +1,19 @@
+ rename telegram-bot/userdata.sh => userdata.sh (99%)
+Mar 18 18:15:55 ip-172-31-23-197 visitor-bot[19499]: 2026-03-18 18:15:55,213 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getMe "HTTP/1.1 200 OK"
+Mar 18 18:15:55 ip-172-31-23-197 visitor-bot[19499]: 2026-03-18 18:15:55,361 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/deleteWebhook "HTTP/1.1 200 OK"
+Mar 18 18:15:55 ip-172-31-23-197 visitor-bot[19499]: 2026-03-18 18:15:55,365 [INFO] telegram.ext.Application: Application started
+Mar 18 18:15:55 ip-172-31-23-197 systemd[1]: Stopping URL Auto Visitor Telegram Bot...
+Mar 18 18:15:56 ip-172-31-23-197 visitor-bot[19499]: 2026-03-18 18:15:56,013 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+Mar 18 18:15:56 ip-172-31-23-197 visitor-bot[19499]: 2026-03-18 18:15:56,014 [INFO] telegram.ext.Application: Application is stopping. This might take a moment.
+Mar 18 18:15:56 ip-172-31-23-197 visitor-bot[19499]: 2026-03-18 18:15:56,014 [INFO] telegram.ext.Application: Application.stop() complete
+Mar 18 18:15:56 ip-172-31-23-197 systemd[1]: visitor-bot.service: Deactivated successfully.
+Mar 18 18:15:56 ip-172-31-23-197 systemd[1]: Stopped URL Auto Visitor Telegram Bot.
+Mar 18 18:15:56 ip-172-31-23-197 systemd[1]: Started URL Auto Visitor Telegram Bot.
+Mar 18 18:15:56 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:15:56,442 [INFO] keep_alive: Self-pinger disabled (SELF_PING_ENABLED=false) — not needed on EC2
+Mar 18 18:15:56 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:15:56,442 [INFO] db: Database initialized.
+Mar 18 18:15:56 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:15:56,662 [INFO] __main__: Bot start ho gaya...
+Mar 18 18:15:57 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:15:57,104 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getMe "HTTP/1.1 200 OK"
+Mar 18 18:15:57 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:15:57,255 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/deleteWebhook "HTTP/1.1 200 OK"
+Mar 18 18:15:57 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:15:57,257 [INFO] telegram.ext.Application: Application started
+Mar 18 18:16:07 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:16:07,693 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"
+Mar 18 18:16:17 ip-172-31-23-197 visitor-bot[19507]: 2026-03-18 18:16:17,839 [INFO] httpx: HTTP Request: POST https://api.telegram.org/bot2008564515:AAF7JBY2J-ybsvpiBoWGzt2dBvY_n6UYXPI/getUpdates "HTTP/1.1 200 OK"

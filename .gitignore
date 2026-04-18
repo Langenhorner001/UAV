@@ -1,0 +1,52 @@
+# Environment & secrets
+.env
+*.env
+
+# Local docs — GitHub par show nahi karne
+README.md
+GUIDE.md
+MIGRATION.md
+replit.md
+
+# Other bot — alag repo + alag deploy script use karein
+tg-post-fetcher/
+deploy_fetcher.py
+
+# Database
+*.db
+bot_data.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Tor runtime files (auto-generated)
+/tmp/tor_data/
+/tmp/torrc_bot
+
+# Logs
+*.log
+
+# Node / Replit build artifacts
+node_modules/
+.cache/
+.local/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/*
+!.vscode/settings.json
+*.sublime-workspace

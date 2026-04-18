@@ -1,0 +1,175 @@
+```json
+{
+  "role": "Replit Agent - Premium Help Message Redesign",
+  "priority": "HIGH",
+  "task": "Redesign the bot's /help message (and any help-related menus) to be ultra eye-catchy, attractive, visually appealing, well-organized, and premium-feeling",
+
+  "context": {
+    "scope": "ONLY the help message(s) — text content, formatting, structure, and any help-related inline keyboards",
+    "goal": "Transform plain/boring help text into a polished, scannable, professional-looking guide that users actually enjoy reading",
+    "preserve": "All existing commands must be documented — do NOT remove info, only enhance presentation"
+  },
+
+  "design_principles": {
+    "visual_hierarchy": [
+      "Bold title header with decorative borders at the top",
+      "Clear section dividers between command categories",
+      "Bold command names, italic descriptions",
+      "Emoji anchors on every command line for instant scannability",
+      "Strategic whitespace (blank lines) between sections for breathing room"
+    ],
+    "structure": [
+      "Header banner → Welcome/tagline → Command categories → Footer/tips",
+      "Group commands by PURPOSE not alphabetically (e.g. '⚙️ Settings', '📊 Stats', '🛡 Admin')",
+      "Each category gets its own titled section with icon",
+      "Admin/premium commands clearly marked and separated"
+    ],
+    "scannability": [
+      "Max 1 command per line",
+      "Format: `EMOJI /command` — `short description`",
+      "Keep descriptions under 8 words per command",
+      "Use consistent formatting across all commands"
+    ],
+    "tone": [
+      "Friendly, welcoming, slightly excited",
+      "Action-oriented language ('Launch', 'Discover', 'Manage')",
+      "Avoid dry/technical jargon where possible"
+    ]
+  },
+
+  "formatting_toolkit": {
+    "decorative_borders": [
+      "╭━━━━━━━━━━━━━━━━━━━━━╮",
+      "╰━━━━━━━━━━━━━━━━━━━━━╯",
+      "✦ ━━━━━━━━━━━━━━━ ✦",
+      "◆◇◆━━━━━━━━━━━━◆◇◆",
+      "━━━━━━━━━━━━━━━━━━━━━",
+      "⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯"
+    ],
+    "section_headers": [
+      "『 ⚙️ SETTINGS 』",
+      "【 📊 STATISTICS 】",
+      "⟪ 🚀 MAIN FEATURES ⟫",
+      "◈ 🛡 ADMIN TOOLS ◈"
+    ],
+    "markdown": [
+      "Use *bold* for command names and section titles",
+      "Use _italic_ for descriptions and hints",
+      "Use `code` style for command examples if needed",
+      "Use MarkdownV2 if bot supports, else HTML equivalent"
+    ],
+    "emojis_per_category": {
+      "general": "🚀 ⚡ ✨ 💫",
+      "settings": "⚙️ 🔧 🎛 🔔",
+      "stats": "📊 📈 📉 📋",
+      "user": "👤 👥 🧑 🪪",
+      "admin": "🛡 👑 🔐 ⚔️",
+      "help": "💡 📖 ❓ 🆘",
+      "premium": "💎 👑 ⭐ 🏆",
+      "fun": "🎉 🎊 🎁 🎯"
+    }
+  },
+
+  "recommended_template": {
+    "structure": [
+      "━━━━━━━━━━━━━━━━━━━━━━━━",
+      "   💎 *BOT NAME — HELP CENTER*",
+      "━━━━━━━━━━━━━━━━━━━━━━━━",
+      "",
+      "_Welcome! Here's everything you can do 👇_",
+      "",
+      "『 🚀 *MAIN COMMANDS* 』",
+      "⚡ /start — _Launch the bot_",
+      "🎯 /action — _Perform main action_",
+      "📤 /send — _Send something_",
+      "",
+      "『 ⚙️ *SETTINGS* 』",
+      "🔧 /config — _Adjust preferences_",
+      "🔔 /notify — _Manage notifications_",
+      "",
+      "『 📊 *STATISTICS* 』",
+      "📈 /stats — _View your stats_",
+      "📋 /history — _Activity log_",
+      "",
+      "『 🛡 *ADMIN ONLY* 』",
+      "👑 /admin — _Admin panel_",
+      "📢 /broadcast — _Send to all users_",
+      "",
+      "━━━━━━━━━━━━━━━━━━━━━━━━",
+      "💡 _Tip: Tap any command to run it instantly_",
+      "🆘 _Need support? Contact @support_",
+      "━━━━━━━━━━━━━━━━━━━━━━━━"
+    ]
+  },
+
+  "inline_keyboard_addition": {
+    "suggestion": "Add an inline keyboard below the help message for quick navigation",
+    "buttons_layout": [
+      "Row 1: [🚀 Quick Start] [📖 Full Guide]",
+      "Row 2: [⚙️ Settings] [📊 Stats]",
+      "Row 3: [💬 Support] [❌ Close]"
+    ],
+    "note": "Only add if bot already uses inline keyboards; callback_data must match existing handlers or be newly wired cleanly"
+  },
+
+  "implementation_workflow": [
+    "1. LOCATE current help message handler (search: /help, help_command, HELP_TEXT)",
+    "2. EXTRACT all currently documented commands into a list",
+    "3. CATEGORIZE commands by purpose (main, settings, stats, admin, etc.)",
+    "4. REWRITE help text using the template + formatting toolkit",
+    "5. Ensure MarkdownV2/HTML parse_mode is set correctly (escape special chars if MarkdownV2)",
+    "6. Store help text in a dedicated constant/module (e.g. `texts/help.py` or `constants.py`)",
+    "7. Optionally add inline keyboard for navigation",
+    "8. Test rendering in actual Telegram to verify no parse errors"
+  ],
+
+  "code_quality_rules": [
+    "Move help text to a separate constant/module — don't hardcode inline in handler",
+    "If using MarkdownV2, properly escape: _ * [ ] ( ) ~ ` > # + - = | { } . !",
+    "Consider multi-language support structure even if only English for now",
+    "Keep help message under Telegram's 4096 char limit",
+    "If too long → split into paginated help or category-based help via buttons"
+  ],
+
+  "constraints": [
+    "DO NOT remove any existing command from help",
+    "DO NOT change command names or behaviors",
+    "DO NOT break parse_mode (test for Markdown errors)",
+    "PRESERVE all current information — only enhance presentation",
+    "Keep under Telegram's 4096 character limit per message"
+  ],
+
+  "before_after_example": {
+    "before": "Available commands:\n/start - Start the bot\n/help - Show help\n/settings - Settings\n/stats - View stats\n/admin - Admin panel",
+    "after": "━━━━━━━━━━━━━━━━━━━━━━━━\n   💎 *BOT — HELP CENTER*\n━━━━━━━━━━━━━━━━━━━━━━━━\n\n_Your complete command guide 👇_\n\n『 🚀 *GET STARTED* 』\n⚡ /start — _Launch the bot_\n💡 /help — _Show this guide_\n\n『 ⚙️ *PERSONAL* 』\n🔧 /settings — _Configure preferences_\n📊 /stats — _View your stats_\n\n『 🛡 *ADMIN* 』\n👑 /admin — _Admin control panel_\n\n━━━━━━━━━━━━━━━━━━━━━━━━\n💬 _Support: @support_\n━━━━━━━━━━━━━━━━━━━━━━━━"
+  },
+
+  "deliverables": [
+    "1. Redesigned /help message with premium formatting",
+    "2. Help text moved to dedicated module/constant",
+    "3. Optional inline keyboard for help navigation",
+    "4. All existing commands preserved and categorized",
+    "5. Confirmation that MarkdownV2/HTML renders without errors",
+    "6. Before/after text preview in completion report"
+  ],
+
+  "verification": [
+    "Help message renders cleanly in Telegram (no raw markdown symbols visible)",
+    "All commands are documented",
+    "Categories are logical and well-grouped",
+    "Visual design feels premium and consistent with rest of bot",
+    "Under 4096 char limit",
+    "No parse_mode errors in logs"
+  ],
+
+  "success_criteria": [
+    "User runs /help → immediately feels 'this bot is professional'",
+    "Information is easier to find than before",
+    "Visual design matches the upgraded inline buttons (ENH-002 style)",
+    "Zero commands lost or broken",
+    "Help is now a feature users enjoy, not just tolerate"
+  ],
+
+  "on_completion": "Report with: file(s) modified, new help text preview, character count, parse_mode used, and confirmation of successful render test in Telegram."
+}
+```

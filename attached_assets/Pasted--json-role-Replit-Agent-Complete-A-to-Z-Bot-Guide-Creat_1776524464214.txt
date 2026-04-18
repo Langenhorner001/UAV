@@ -1,0 +1,275 @@
+```json
+{
+  "role": "Replit Agent - Complete A-to-Z Bot Guide Creator",
+  "priority": "HIGH",
+  "task": "Create a comprehensive, beautifully formatted A-to-Z user guide for the bot that explains everything — what the bot does, its benefits, how to use every feature step-by-step — and integrate it via a 📖 'How To' inline button accessible from main menu/help",
+
+  "context": {
+    "scope": "Build a full user-facing guide system: content creation + UI integration via inline button",
+    "goal": "Any new user should be able to read this guide and fully understand + use the bot without external help",
+    "target_audience": "End users (assume zero prior knowledge of the bot)"
+  },
+
+  "phase_1_analysis": {
+    "actions": [
+      "Scan entire bot codebase to understand EVERY feature, command, and workflow",
+      "List all user-facing capabilities (commands, buttons, automated actions)",
+      "Identify the bot's core value proposition (what problem does it solve?)",
+      "Note all integrations, external services, and prerequisites users need",
+      "Detect any setup steps users must complete (login, API keys, permissions, etc.)"
+    ]
+  },
+
+  "phase_2_guide_structure": {
+    "required_sections": {
+      "1_welcome_intro": {
+        "title": "👋 Welcome / Introduction",
+        "content": [
+          "Bot name + tagline",
+          "1-2 line elevator pitch — what it does",
+          "Who it's for"
+        ]
+      },
+      "2_what_is_this_bot": {
+        "title": "💡 What is this Bot?",
+        "content": [
+          "Detailed explanation of bot's purpose",
+          "Core problem it solves",
+          "Main use cases (3-5 scenarios)"
+        ]
+      },
+      "3_key_benefits": {
+        "title": "✨ Key Benefits / Why Use It?",
+        "content": [
+          "Bullet list of 5-8 concrete benefits",
+          "Each benefit with emoji + bold title + short explanation",
+          "Focus on USER VALUE not technical features"
+        ]
+      },
+      "4_features_overview": {
+        "title": "🚀 Features Overview",
+        "content": [
+          "All major features categorized",
+          "Brief description per feature",
+          "Mark premium/admin-only features clearly"
+        ]
+      },
+      "5_getting_started": {
+        "title": "🎯 Getting Started (Quick Setup)",
+        "content": [
+          "Step-by-step first-time setup",
+          "Numbered steps (1, 2, 3...)",
+          "Each step with clear action + expected result",
+          "Screenshots/examples described in text"
+        ]
+      },
+      "6_how_to_use": {
+        "title": "📖 How to Use — Step by Step",
+        "content": [
+          "Detailed walkthrough of EVERY command",
+          "Format per command: Command → Purpose → How to use → Example → Expected result",
+          "Group by category (Main, Settings, Stats, Admin)"
+        ]
+      },
+      "7_pro_tips": {
+        "title": "💎 Pro Tips & Tricks",
+        "content": [
+          "5-7 power-user tips",
+          "Hidden features or shortcuts",
+          "Best practices"
+        ]
+      },
+      "8_faq": {
+        "title": "❓ Frequently Asked Questions",
+        "content": [
+          "8-12 common questions with clear answers",
+          "Cover: troubleshooting, limits, privacy, support",
+          "Q in bold, A in regular text"
+        ]
+      },
+      "9_troubleshooting": {
+        "title": "🛠 Troubleshooting",
+        "content": [
+          "Common errors and how to fix them",
+          "Format: Problem → Cause → Solution",
+          "When to contact support"
+        ]
+      },
+      "10_support_contact": {
+        "title": "💬 Support & Contact",
+        "content": [
+          "Where to get help",
+          "Support username/channel",
+          "Response time expectations"
+        ]
+      }
+    }
+  },
+
+  "phase_3_design_formatting": {
+    "visual_principles": [
+      "Premium, consistent style matching ENH-002 inline buttons + redesigned help",
+      "Decorative borders for major section headers",
+      "Bold titles, italic descriptions",
+      "Strategic emojis as visual anchors",
+      "Whitespace between sections for readability"
+    ],
+    "border_styles": [
+      "╭━━━━━━━━━━━━━━━━━━━━━╮",
+      "╰━━━━━━━━━━━━━━━━━━━━━╯",
+      "✦ ━━━━━━━━━━━━━━━ ✦",
+      "━━━━━━━━━━━━━━━━━━━━━"
+    ],
+    "section_header_format": "『 EMOJI *SECTION TITLE* 』",
+    "markdown": "Use MarkdownV2 (escape special chars) or HTML — match bot's existing parse_mode"
+  },
+
+  "phase_4_pagination_strategy": {
+    "challenge": "Full guide will exceed Telegram's 4096 char limit",
+    "solution": "Multi-page guide with navigation buttons",
+    "approach": [
+      "Split guide into logical pages (one section per page OR grouped)",
+      "Each page shows: page content + navigation footer",
+      "Navigation buttons: [⬅️ Previous] [📑 Index] [➡️ Next]",
+      "Page indicator: 'Page 3 of 10'",
+      "Index page lists all sections as clickable buttons"
+    ],
+    "alternative": "Single long message split via 'Show More' button if content fits in 2-3 messages"
+  },
+
+  "phase_5_inline_button_integration": {
+    "primary_button": {
+      "label": "📖 How To Use",
+      "callback_data": "guide_open",
+      "placement": [
+        "Main menu (top priority)",
+        "Help message (prominent position)",
+        "Welcome/start message for new users"
+      ]
+    },
+    "guide_navigation_buttons": {
+      "index_page": [
+        "[👋 Intro] [💡 What is it]",
+        "[✨ Benefits] [🚀 Features]",
+        "[🎯 Setup] [📖 How to Use]",
+        "[💎 Pro Tips] [❓ FAQ]",
+        "[🛠 Troubleshoot] [💬 Support]",
+        "[🔙 Back to Menu]"
+      ],
+      "content_page": [
+        "[⬅️ Previous] [📑 Index] [➡️ Next]",
+        "[🏠 Main Menu] [❌ Close]"
+      ]
+    },
+    "callback_data_naming": "Use clear convention: guide_intro, guide_benefits, guide_features, guide_setup, guide_howto, guide_tips, guide_faq, guide_troubleshoot, guide_support, guide_index"
+  },
+
+  "phase_6_implementation_workflow": [
+    "1. Analyze codebase → extract all features and commands",
+    "2. Draft full guide content in dedicated module (e.g. `texts/guide.py`)",
+    "3. Structure as dictionary: {page_id: {title, content, prev, next}}",
+    "4. Create guide handler module (e.g. `handlers/guide.py`) with callback handlers",
+    "5. Build keyboard generators for index page + content pages",
+    "6. Add 📖 'How To Use' button to main menu, /help, and /start",
+    "7. Wire callback_data routing to display correct pages",
+    "8. Test full navigation flow in Telegram",
+    "9. Verify all pages render without parse errors and stay under 4096 chars"
+  ],
+
+  "code_organization": {
+    "suggested_files": [
+      "texts/guide.py — All guide content as structured constants",
+      "handlers/guide.py — Callback handlers for guide navigation",
+      "utils/guide_keyboards.py — Inline keyboard builders for guide pages"
+    ],
+    "best_practices": [
+      "Separate content from logic (content in texts/, logic in handlers/)",
+      "Use dictionary or class-based page structure for easy editing",
+      "Make adding new pages trivial (just add to dict)",
+      "Centralize emoji constants for consistency"
+    ]
+  },
+
+  "content_quality_rules": [
+    "Write in clear, friendly, conversational tone",
+    "Use 'you' not 'the user'",
+    "Avoid technical jargon unless necessary (and explain it)",
+    "Show examples wherever possible",
+    "Keep paragraphs short (2-3 lines max)",
+    "Use bullet points and numbered lists liberally",
+    "Every benefit should answer 'what's in it for me?'",
+    "Every how-to should be actionable and specific"
+  ],
+
+  "example_page_structure": {
+    "page": "guide_benefits",
+    "rendered": [
+      "╭━━━━━━━━━━━━━━━━━━━━━╮",
+      "   ✨ *KEY BENEFITS*",
+      "╰━━━━━━━━━━━━━━━━━━━━━╯",
+      "",
+      "_Why thousands love this bot 👇_",
+      "",
+      "⚡ *Lightning Fast*",
+      "_Get results in seconds, not minutes_",
+      "",
+      "🛡 *100% Secure*",
+      "_Your data stays private and encrypted_",
+      "",
+      "🎯 *Easy to Use*",
+      "_No technical knowledge required_",
+      "",
+      "💎 *Premium Features*",
+      "_Access powerful tools effortlessly_",
+      "",
+      "━━━━━━━━━━━━━━━━━━━━━",
+      "📄 _Page 3 of 10_",
+      "━━━━━━━━━━━━━━━━━━━━━"
+    ],
+    "buttons": "[⬅️ Previous] [📑 Index] [➡️ Next]\n[🏠 Main Menu] [❌ Close]"
+  },
+
+  "constraints": [
+    "DO NOT change existing commands or handlers",
+    "DO NOT remove any existing feature",
+    "PRESERVE existing parse_mode (Markdown/MarkdownV2/HTML)",
+    "Properly escape special characters if MarkdownV2",
+    "Each page must stay under 4096 char Telegram limit",
+    "Keep callback_data short (under 64 bytes)",
+    "Add the 📖 button without removing any existing button"
+  ],
+
+  "deliverables": [
+    "1. Complete A-to-Z guide content covering all 10 sections",
+    "2. Dedicated guide content module (texts/guide.py)",
+    "3. Guide navigation handler module",
+    "4. Inline keyboard builders for guide UI",
+    "5. 📖 'How To Use' button added to main menu, /help, and /start",
+    "6. Working multi-page navigation (prev/next/index/close)",
+    "7. Verification that all pages render correctly in Telegram",
+    "8. Brief CHANGELOG entry documenting the new guide system"
+  ],
+
+  "verification": [
+    "📖 button visible on main menu, /help, and /start",
+    "Tapping button opens guide index page",
+    "All 10 sections accessible from index",
+    "Previous/Next navigation works between all pages",
+    "No MarkdownV2/HTML parse errors",
+    "All pages under 4096 char limit",
+    "Visual design consistent with ENH-002 buttons + redesigned help",
+    "Close button returns user to main menu cleanly"
+  ],
+
+  "success_criteria": [
+    "A brand new user can open the guide and fully understand the bot in 5 minutes",
+    "Every feature is documented with clear how-to steps",
+    "Benefits are compelling and user-focused",
+    "Navigation feels smooth and intuitive",
+    "Visual design feels premium and matches rest of bot",
+    "Reduces support questions by being self-service"
+  ],
+
+  "on_completion": "Report with: list of files created/modified, total guide page count, character count per page, screenshot/preview of index page + 1 content page, and confirmation that 📖 button works from all entry points."
+}
+```

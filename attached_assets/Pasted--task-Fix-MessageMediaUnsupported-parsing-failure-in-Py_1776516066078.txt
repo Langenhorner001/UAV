@@ -1,0 +1,122 @@
+{
+  "task": "Fix MessageMediaUnsupported parsing failure in Pyrogram-based Telegram client",
+  "priority": "high",
+  "context": {
+    "error_message": {
+      "header": "📵 Unsupported media",
+      "reason": "Telegram client cannot parse this media type (library outdated or brand-new format)",
+      "direct_link": "https://t.me/LearnLimitless/63",
+      "diagnostic": "id=63 raw_media=MessageMediaUnsupported"
+    },
+    "root_cause": [
+      "Pyrogram TL schema outdated vs current Telegram layer",
+      "Newly-introduced media variant (Story / Paid Media / Giveaway / Premium Gift / new sticker)",
+      "Client library not updated to latest fork"
+    ]
+  },
+  "objectives": [
+    "Eliminate MessageMediaUnsupported by upgrading client",
+    "Add graceful fallback so message is never fully lost",
+    "Provide clear diagnostic logs for future unsupported types"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Upgrade Telegram Client Library",
+      "actions": [
+        "Uninstall stock pyrogram: pip uninstall -y pyrogram",
+        "Install maintained fork: pip install -U pyrofork tgcrypto",
+        "Update requirements.txt: replace 'pyrogram' with 'pyrofork'",
+        "Restart Replit workflow to reload session"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Add Unsupported Media Detector",
+      "file": "utils/media_guard.py",
+      "code": "from pyrogram.raw.types import MessageMediaUnsupported\n\ndef is_unsupported(msg) -> bool:\n    m = getattr(msg, 'media', None) or getattr(msg, 'raw', None)\n    return isinstance(m, MessageMediaUnsupported) or type(m).__name__ == 'MessageMediaUnsupported'"
+    },
+    {
+      "id": 3,
+      "title": "Implement 3-Tier Fallback Handler",
+      "tiers": [
+        {
+          "tier": 1,
+          "action": "Try client.copy_message(dest, src, msg.id)"
+        },
+        {
+          "tier": 2,
+          "action": "Try client.forward_messages(dest, src, msg.id, drop_author=True)"
+        },
+        {
+          "tier": 3,
+          "action": "Try client.download_media(msg, in_memory=True) then re-upload via send_document/send_video/send_photo"
+        },
+        {
+          "tier": 4,
+          "action": "Final fallback: send text with direct link https://t.me/{chat}/{id} + media class name"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Special-Case Handlers",
+      "map": {
+        "Story": "Fetch via raw stories.GetStoriesByID",
+        "PaidMedia": "Send notice: '🔒 Paid media (locked)' + link",
+        "Giveaway": "Reconstruct as text summary with prize details",
+        "PremiumGift": "Send text notice with link",
+        "Unknown": "Log type(msg.media).__name__ and send link fallback"
+      }
+    },
+    {
+      "id": 5,
+      "title": "Enhanced Logging",
+      "format": "[id={id}] media_class={cls} → Tier1={s1} Tier2={s2} Tier3={s3} final={result}",
+      "purpose": "Identify exact new media variant for future patches"
+    },
+    {
+      "id": 6,
+      "title": "Config Flag",
+      "file": "config.py",
+      "code": "UNSUPPORTED_STRATEGY = 'fallback'  # fallback | skip | notify"
+    },
+    {
+      "id": 7,
+      "title": "Verification",
+      "steps": [
+        "Test on https://t.me/LearnLimitless/63",
+        "Confirm delivery via one of the tiers",
+        "Check logs show tier progression",
+        "Regression test: photo, video, document, sticker, voice, audio"
+      ]
+    }
+  ],
+  "deliverables": [
+    "requirements.txt updated with pyrofork",
+    "utils/media_guard.py created",
+    "Handler refactored with 4-tier fallback",
+    "config.py flag added",
+    "Successful delivery of id=63 from LearnLimitless channel",
+    "Clean tier-based logs"
+  ],
+  "constraints": [
+    "Do NOT delete existing .session files",
+    "Do NOT break currently working media types",
+    "Do NOT hardcode API_ID / API_HASH",
+    "Maintain backward compatibility with existing config"
+  ],
+  "success_criteria": {
+    "primary": "Message id=63 from LearnLimitless delivers successfully (not skipped)",
+    "secondary": "No regression on standard media types",
+    "logs": "Exact raw_media class name visible for diagnostics"
+  },
+  "execution_order": [
+    "1. Upgrade to pyrofork + tgcrypto",
+    "2. Add media_guard.py helper",
+    "3. Wrap handler in 4-tier try/except chain",
+    "4. Add special-case handlers",
+    "5. Test on id=63",
+    "6. Report tier logs back"
+  ]
+}

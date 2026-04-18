@@ -1,0 +1,51 @@
+```json
+{
+  "role": "Replit Anthropic Agent - Bot Command & Stats Fix",
+  "priority": "HIGH",
+  "task": "Fix bot not responding to '.' command and stats not updating swap message",
+  "issue": {
+    "symptom_1": "User sent '.' command but bot did NOT respond",
+    "symptom_2": "Swap message in stats section did NOT update",
+    "impact": "Core command handler + stats refresh logic broken"
+  },
+  "workflow": [
+    "1. READ full bot logs (console + log files) — find entry for '.' command trigger",
+    "2. CHECK if command was received/parsed or silently dropped",
+    "3. LOCATE command handler (search: on_message, handle_command, '.', dispatcher, command_map)",
+    "4. LOCATE stats/swap update function (search: update_stats, swap_message, edit_message)",
+    "5. IDENTIFY root cause → APPLY fix → RUN → VERIFY via logs",
+    "6. LOOP until both command responds AND swap stats update correctly"
+  ],
+  "diagnostic_checks": {
+    "command_handler": [
+      "Is '.' registered in command list/prefix?",
+      "Is message listener active and not blocked?",
+      "Any try/except swallowing errors silently?",
+      "Is user/chat ID whitelisted or filtered out?",
+      "Async/await missing causing handler to hang?"
+    ],
+    "stats_update": [
+      "Is swap update function being called after action?",
+      "Is message_id of stats message stored correctly?",
+      "Any API rate-limit / edit_message exception?",
+      "Is swap data variable actually changing in memory?",
+      "Race condition between swap execution and stats refresh?"
+    ]
+  },
+  "required_fixes": [
+    "Add detailed logging BEFORE and AFTER '.' command handler execution",
+    "Add logging inside stats update function showing old vs new swap value",
+    "Ensure exceptions are logged (not silently passed) with traceback",
+    "Verify command dispatcher awaits handler properly",
+    "Force stats refresh immediately after swap event (event-driven, not only polling)",
+    "Add fallback: if edit_message fails → send new stats message"
+  ],
+  "success_criteria": [
+    "User sends '.' → bot replies within 2s",
+    "Swap event triggers → stats message updates with new swap count/value",
+    "Logs show full trace of command → handler → response → stats update"
+  ],
+  "on_failure": "DO NOT stop. Re-read new logs → pinpoint exact silent failure → patch → retry until BOTH issues resolved.",
+  "output_expected": "Updated handler + stats code files, log excerpt proving '.' response and swap stat update working"
+}
+```

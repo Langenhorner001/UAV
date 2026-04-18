@@ -1,0 +1,267 @@
+```json
+{
+  "role": "Replit Agent - Persistent Reply Keyboard (Bottom Menu Buttons) Exactly Like Reference Screenshot",
+  "priority": "HIGH",
+  "task": "Add a persistent ReplyKeyboardMarkup at the bottom of chat — EXACTLY matching the reference screenshot from Pixel Verification Bot (BD). 7 buttons arranged in 2-column layout with a full-width Guide button at the bottom",
+
+  "reference_screenshot_analysis": {
+    "bot_name_in_reference": "Pixel Verification Bot (BD)",
+    "observed_layout": {
+      "row_1": "[🛒 Place Order]       [💼 Top-Up]",
+      "row_2": "[💰 Balance]           [🎁 Refer & Earn]",
+      "row_3": "[📚 History]           [📞 Contact Support]",
+      "row_4": "[📖 Guide] (full width)"
+    },
+    "visual_characteristics": [
+      "Persistent reply keyboard (bottom of chat, above typing area)",
+      "Dark theme buttons with rounded corners",
+      "Each button has emoji on the LEFT followed by text",
+      "2 buttons per row except last row (Guide) which is full-width",
+      "resize_keyboard enabled (buttons fit screen nicely)",
+      "Keyboard persists across all messages (is_persistent=True)"
+    ],
+    "exact_button_labels_to_use": [
+      "🛒 Place Order",
+      "💼 Top-Up",
+      "💰 Balance",
+      "🎁 Refer & Earn",
+      "📚 History",
+      "📞 Contact Support",
+      "📖 Guide"
+    ]
+  },
+
+  "technical_implementation": {
+    "markup_type": "ReplyKeyboardMarkup (NOT InlineKeyboardMarkup)",
+    "required_parameters": {
+      "resize_keyboard": "True — makes buttons fit screen nicely like screenshot",
+      "is_persistent": "True — keyboard stays visible always",
+      "one_time_keyboard": "False — don't hide after single use",
+      "input_field_placeholder": "'Choose an option or type a command...' (optional)"
+    },
+    "library_examples": {
+      "python_telegram_bot": "ReplyKeyboardMarkup([[KeyboardButton(...)]], resize_keyboard=True, is_persistent=True)",
+      "aiogram": "ReplyKeyboardMarkup(keyboard=[[KeyboardButton(text='...')]], resize_keyboard=True, is_persistent=True)",
+      "telebot": "types.ReplyKeyboardMarkup(resize_keyboard=True, is_persistent=True) then .add() or .row()",
+      "telegraf_js": "Markup.keyboard([...]).resize().persistent()"
+    }
+  },
+
+  "phase_1_file_structure": {
+    "create_files": [
+      "constants/menu_labels.py — Button text constants (prevents typos)",
+      "utils/reply_keyboards.py — Keyboard builder functions",
+      "handlers/menu_buttons.py — Message handlers routing each button to correct feature"
+    ]
+  },
+
+  "phase_2_button_label_constants": {
+    "file": "constants/menu_labels.py",
+    "content": [
+      "BTN_PLACE_ORDER = '🛒 Place Order'",
+      "BTN_TOPUP = '💼 Top-Up'",
+      "BTN_BALANCE = '💰 Balance'",
+      "BTN_REFER = '🎁 Refer & Earn'",
+      "BTN_HISTORY = '📚 History'",
+      "BTN_SUPPORT = '📞 Contact Support'",
+      "BTN_GUIDE = '📖 Guide'",
+      "",
+      "# Role-specific extras",
+      "BTN_OWNER_PANEL = '👑 Owner Panel'",
+      "BTN_SUDO_PANEL = '🛡 SUDO Panel'",
+      "BTN_REDEEM = '🎟 Redeem Code'",
+      "BTN_CONTACT_OWNER = '💬 Contact Owner'"
+    ]
+  },
+
+  "phase_3_keyboard_builder": {
+    "file": "utils/reply_keyboards.py",
+    "pseudo_code": [
+      "from telegram import ReplyKeyboardMarkup, KeyboardButton",
+      "from constants.menu_labels import *",
+      "",
+      "def get_main_menu_keyboard(role='PREMIUM'):",
+      "    \"\"\"Main persistent reply keyboard matching reference screenshot\"\"\"",
+      "    keyboard = [",
+      "        [KeyboardButton(BTN_PLACE_ORDER), KeyboardButton(BTN_TOPUP)],",
+      "        [KeyboardButton(BTN_BALANCE), KeyboardButton(BTN_REFER)],",
+      "        [KeyboardButton(BTN_HISTORY), KeyboardButton(BTN_SUPPORT)],",
+      "        [KeyboardButton(BTN_GUIDE)]",
+      "    ]",
+      "    # Append admin panels if applicable",
+      "    if role == 'OWNER':",
+      "        keyboard.append([KeyboardButton(BTN_OWNER_PANEL)])",
+      "    elif role == 'SUDO':",
+      "        keyboard.append([KeyboardButton(BTN_SUDO_PANEL)])",
+      "    return ReplyKeyboardMarkup(",
+      "        keyboard,",
+      "        resize_keyboard=True,",
+      "        is_persistent=True,",
+      "        input_field_placeholder='Choose an option...'",
+      "    )",
+      "",
+      "def get_guest_keyboard():",
+      "    \"\"\"Limited keyboard for guests without access\"\"\"",
+      "    keyboard = [",
+      "        [KeyboardButton(BTN_REDEEM)],",
+      "        [KeyboardButton(BTN_CONTACT_OWNER), KeyboardButton(BTN_GUIDE)]",
+      "    ]",
+      "    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True, is_persistent=True)"
+    ]
+  },
+
+  "phase_4_button_handlers": {
+    "file": "handlers/menu_buttons.py",
+    "routing_map": {
+      "🛒 Place Order": "Trigger existing order/purchase flow (equivalent of /order or main action)",
+      "💼 Top-Up": "Trigger existing top-up/add funds flow (the flow shown in screenshot)",
+      "💰 Balance": "Display user's current balance/points",
+      "🎁 Refer & Earn": "Show referral link + referral stats + rewards info",
+      "📚 History": "Show user's order/transaction history with pagination",
+      "📞 Contact Support": "Show support contact (username, channel, or open support chat)",
+      "📖 Guide": "Open the A-to-Z guide (trigger guide_open from earlier ENH)",
+      "👑 Owner Panel": "Owner-only admin panel (from access control system)",
+      "🛡 SUDO Panel": "SUDO admin panel (from access control system)",
+      "🎟 Redeem Code": "Prompt user to enter redeem code",
+      "💬 Contact Owner": "Show owner contact info for access requests"
+    },
+    "handler_pattern": [
+      "Use MessageHandler with exact-text filter (Filters.text & Filters.regex(f'^{BTN_PLACE_ORDER}$'))",
+      "Each handler calls the corresponding existing feature function",
+      "Preserve all existing logic — just add button entry point",
+      "Apply role-based access checks (from access control system) before executing"
+    ]
+  },
+
+  "phase_5_integration_points": {
+    "attach_keyboard_in": [
+      "/start command → attach role-appropriate keyboard to welcome message",
+      "/menu command (NEW) → re-open the keyboard anytime",
+      "After successful /redeem → switch from guest to premium keyboard",
+      "After owner grants access → switch user to premium keyboard",
+      "When Premium expires → switch to guest keyboard"
+    ],
+    "hide_keyboard_in": [
+      "Multi-step input flows (e.g. asking for amount, custom order) → use ReplyKeyboardRemove temporarily",
+      "Restore keyboard after flow completes or cancels"
+    ]
+  },
+
+  "phase_6_role_based_keyboards": {
+    "guest": {
+      "layout": [
+        "[🎟 Redeem Code]",
+        "[💬 Contact Owner]  [📖 Guide]"
+      ],
+      "purpose": "Limited options until user gets access"
+    },
+    "premium": {
+      "layout": [
+        "[🛒 Place Order]       [💼 Top-Up]",
+        "[💰 Balance]           [🎁 Refer & Earn]",
+        "[📚 History]           [📞 Contact Support]",
+        "[📖 Guide]"
+      ],
+      "purpose": "Full bot functionality (matches reference screenshot exactly)"
+    },
+    "sudo": {
+      "layout": "Same as Premium + [🛡 SUDO Panel] row",
+      "purpose": "Full bot + admin tools"
+    },
+    "owner": {
+      "layout": "Same as Premium + [👑 Owner Panel] row",
+      "purpose": "Full bot + supreme admin tools"
+    }
+  },
+
+  "phase_7_implementation_workflow": [
+    "1. Create constants/menu_labels.py with all button text constants",
+    "2. Create utils/reply_keyboards.py with role-based keyboard builders",
+    "3. Create handlers/menu_buttons.py with exact-text message handlers",
+    "4. Wire each button handler to its corresponding existing feature",
+    "5. Modify /start handler to attach role-appropriate keyboard",
+    "6. Add /menu command to re-open keyboard anytime",
+    "7. Update /redeem success flow to switch user's keyboard to premium",
+    "8. Integrate with existing access control — gate button actions by role",
+    "9. Handle ReplyKeyboardRemove in multi-step flows (then restore)",
+    "10. Test on real Telegram — verify layout exactly matches reference screenshot",
+    "11. Verify keyboard persists across messages",
+    "12. Verify each button triggers correct feature"
+  ],
+
+  "phase_8_ux_details": {
+    "welcome_message_with_keyboard": [
+      "╭━━━━━━━━━━━━━━━━━━━━━╮",
+      "   👋 *Welcome back!*",
+      "╰━━━━━━━━━━━━━━━━━━━━━╯",
+      "",
+      "_Use the menu below to navigate 👇_",
+      "",
+      "💎 _Your access:_ Premium",
+      "⏱ _Expires:_ 2025-02-14"
+    ],
+    "menu_command_message": [
+      "『 📋 *MAIN MENU* 』",
+      "",
+      "_Tap any button below to continue_"
+    ]
+  },
+
+  "constraints": [
+    "Match reference screenshot EXACTLY — 2 buttons per row, Guide full-width at bottom",
+    "Use EXACT emojis and labels shown in screenshot (🛒 Place Order, 💼 Top-Up, etc.)",
+    "DO NOT remove any existing inline buttons — reply keyboard is additional",
+    "DO NOT break existing commands or flows",
+    "Button labels MUST match exactly between keyboard builder and handlers (use constants)",
+    "resize_keyboard=True and is_persistent=True are MANDATORY",
+    "Respect existing access control system (OWNER/SUDO/PREMIUM/GUEST)",
+    "Wrap button handlers with same role decorators used elsewhere",
+    "Hide keyboard during multi-step input flows, restore after"
+  ],
+
+  "deliverables": [
+    "1. Persistent reply keyboard at bottom of chat — visually identical to reference screenshot",
+    "2. 7 buttons in exact layout: Place Order, Top-Up, Balance, Refer & Earn, History, Contact Support, Guide",
+    "3. Full-width Guide button at the bottom (as shown in screenshot)",
+    "4. Role-specific keyboard variants (guest/premium/sudo/owner)",
+    "5. /menu command to re-open keyboard anytime",
+    "6. Keyboard auto-attached to /start welcome message",
+    "7. Each button routed to correct existing bot feature",
+    "8. Centralized keyboard builder module (utils/reply_keyboards.py)",
+    "9. Button label constants module (constants/menu_labels.py)",
+    "10. Message handlers module (handlers/menu_buttons.py)",
+    "11. CHANGELOG entry describing the new bottom menu system"
+  ],
+
+  "verification": [
+    "✅ Reply keyboard appears at bottom of chat on /start — visually matches screenshot",
+    "✅ Layout is exactly: 2+2+2+1 rows (Place Order/Top-Up | Balance/Refer | History/Support | Guide)",
+    "✅ Each button has correct emoji + text (🛒 Place Order, 💼 Top-Up, 💰 Balance, 🎁 Refer & Earn, 📚 History, 📞 Contact Support, 📖 Guide)",
+    "✅ Tapping 🛒 Place Order triggers order flow",
+    "✅ Tapping 💼 Top-Up triggers top-up flow (the one shown in screenshot)",
+    "✅ Tapping 💰 Balance shows user balance",
+    "✅ Tapping 🎁 Refer & Earn shows referral system",
+    "✅ Tapping 📚 History shows transaction history",
+    "✅ Tapping 📞 Contact Support shows support info",
+    "✅ Tapping 📖 Guide opens the A-to-Z guide",
+    "✅ Keyboard persists across messages (doesn't disappear after tap)",
+    "✅ Keyboard resizes correctly on mobile and desktop",
+    "✅ Owner sees extra [👑 Owner Panel] row",
+    "✅ SUDO sees extra [🛡 SUDO Panel] row",
+    "✅ Guests see limited keyboard (Redeem/Contact Owner/Guide)",
+    "✅ Multi-step flows temporarily hide keyboard, then restore",
+    "✅ No existing inline buttons or commands broken"
+  ],
+
+  "success_criteria": [
+    "Bottom menu is visually indistinguishable from reference screenshot",
+    "All 7 primary features accessible in 1 tap",
+    "Users no longer need to remember slash commands",
+    "Keyboard feels native, smooth, and professional",
+    "Seamlessly integrates with: access control system, inline buttons (ENH-002), redesigned help, A-to-Z guide, redeem code system",
+    "UX is consistent across guest/premium/sudo/owner roles"
+  ],
+
+  "on_completion": "Report with: (1) screenshot/preview of the new bottom keyboard in Telegram, (2) side-by-side comparison with reference screenshot, (3) list of files created/modified, (4) confirmation that all 7 buttons route to correct handlers, (5) confirmation that role-based variants work, (6) verification that multi-step flows properly hide/restore keyboard."
+}
+```

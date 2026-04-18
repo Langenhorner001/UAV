@@ -1,0 +1,135 @@
+```json
+{
+  "task": "Fix MessageMediaUnsupported error in Pyrogram forwarder bot",
+  "priority": "high",
+  "context": {
+    "error": {
+      "symptom": "Post deliver nahi ho saka",
+      "type": "none",
+      "diagnostic": "id=63 raw_media=MessageMediaUnsupported",
+      "affected_content": [
+        "Stories",
+        "Paid Media",
+        "Giveaway",
+        "Premium Gift",
+        "New sticker formats"
+      ]
+    },
+    "root_cause": [
+      "Pyrogram version outdated vs Telegram TL schema",
+      "Layer mismatch with current Telegram API",
+      "Client cannot parse newly-introduced MessageMedia* variants",
+      "Channel content-type-specific protection"
+    ]
+  },
+  "objectives": [
+    "Replace silent skip with robust fallback pipeline",
+    "Ensure zero post loss",
+    "Add clear tier-based logging",
+    "Maintain backward compatibility"
+  ],
+  "tasks": [
+    {
+      "id": 1,
+      "title": "Upgrade Pyrogram Stack",
+      "steps": [
+        "Replace stock pyrogram with maintained fork (pyrofork recommended, alternatives: kurigram, electrogram)",
+        "Update requirements.txt / pyproject.toml",
+        "Pin tgcrypto to latest version",
+        "Run pip install -U and restart workflow"
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Create Media Detection Helper",
+      "file": "utils/media_guard.py",
+      "code": "from pyrogram.raw.types import MessageMediaUnsupported\n\ndef is_unsupported(message) -> bool:\n    raw = getattr(message, 'raw', None) or getattr(message, 'media', None)\n    return isinstance(raw, MessageMediaUnsupported) or str(type(raw).__name__) == 'MessageMediaUnsupported'"
+    },
+    {
+      "id": 3,
+      "title": "Implement 4-Tier Fallback Chain",
+      "tiers": [
+        {
+          "tier": 1,
+          "name": "Native copy",
+          "method": "await client.copy_message(dest, src_chat, msg.id)"
+        },
+        {
+          "tier": 2,
+          "name": "Raw forward",
+          "method": "await client.forward_messages(dest, src_chat, msg.id, drop_author=True)"
+        },
+        {
+          "tier": 3,
+          "name": "Raw API download + re-upload",
+          "method": "client.invoke(GetMessages(...)) + download_media(in_memory=True) + re-upload via send_document/send_video/send_photo"
+        },
+        {
+          "tier": 4,
+          "name": "Text notice fallback",
+          "method": "Send deep-link https://t.me/c/{chat_id}/{msg_id} instead of silent skip"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Improved Logging",
+      "format": "[id={msg_id}] Tier1 copy {status} → Tier2 forward {status} → Tier3 download {status} {result}",
+      "extra": "Log exact raw media class name via type(msg.media).__name__"
+    },
+    {
+      "id": 5,
+      "title": "Special-Case Handlers",
+      "handlers": {
+        "Stories": "Extract via stories.GetStoriesByID raw call",
+        "PaidMedia": "Skip with log 'paid_media_locked'",
+        "Giveaway": "Reconstruct as text summary",
+        "GiveawayResults": "Reconstruct as text summary",
+        "PremiumGift": "Skip with text notice"
+      }
+    },
+    {
+      "id": 6,
+      "title": "Add Config Flag",
+      "file": "config.py",
+      "code": "UNSUPPORTED_MEDIA_STRATEGY = 'fallback'  # options: fallback | skip | notify"
+    },
+    {
+      "id": 7,
+      "title": "Testing",
+      "steps": [
+        "Run on failing message id=63 and confirm delivery",
+        "Add unit test mocking MessageMediaUnsupported",
+        "Regression test on photo/video/document/sticker/audio"
+      ]
+    }
+  ],
+  "deliverables": [
+    "Updated requirements.txt with pyrofork",
+    "New utils/media_guard.py",
+    "Refactored forwarder handler with 4-tier fallback",
+    "Enhanced logs showing tier progression",
+    "Successful delivery of id=63",
+    "Passing unit tests"
+  ],
+  "constraints": [
+    "Do NOT break existing working media types",
+    "Do NOT delete current session files (.session)",
+    "Keep backward compatibility with existing config keys",
+    "Do NOT expose API_ID / API_HASH in logs"
+  ],
+  "success_criteria": {
+    "primary": "Message id=63 delivers successfully",
+    "secondary": "No regression on standard media",
+    "logs": "Tier progression visible in output"
+  },
+  "execution_order": [
+    "Upgrade to pyrofork first",
+    "Implement media_guard helper",
+    "Refactor handler with fallback chain",
+    "Add special-case handlers",
+    "Test on id=63",
+    "Report logs back"
+  ]
+}
+```

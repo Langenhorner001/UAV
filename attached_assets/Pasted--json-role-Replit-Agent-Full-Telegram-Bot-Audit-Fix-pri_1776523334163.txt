@@ -1,0 +1,140 @@
+```json
+{
+  "role": "Replit Agent - Full Telegram Bot Audit & Fix",
+  "priority": "CRITICAL",
+  "mission": "Perform deep end-to-end analysis of the entire Telegram bot codebase, identify ALL bugs, vulnerabilities, logic flaws, performance issues, and fix them systematically without breaking existing working features",
+  
+  "phase_1_discovery": {
+    "goal": "Understand the full codebase before touching anything",
+    "actions": [
+      "List ALL project files (tree structure)",
+      "Identify entry point (main.py / bot.py / index.js)",
+      "Map all modules: command handlers, database, API clients, utils, config",
+      "Document bot's purpose, commands, user flows, and external integrations (Selenium, APIs, DB, etc.)",
+      "Note tech stack: library (python-telegram-bot / aiogram / telebot / telegraf), async/sync, storage type"
+    ]
+  },
+
+  "phase_2_static_analysis": {
+    "goal": "Scan code for issues WITHOUT running it",
+    "check_categories": {
+      "bugs": [
+        "Unhandled exceptions / bare except clauses swallowing errors",
+        "Missing await on async functions",
+        "Race conditions in concurrent handlers",
+        "Incorrect variable scoping / global state mutation",
+        "Off-by-one errors, wrong comparisons, typos in command names",
+        "Message handlers not registered or duplicated",
+        "Callback query handlers missing answer()",
+        "Infinite loops or blocking calls in async context"
+      ],
+      "security_vulnerabilities": [
+        "Hardcoded API tokens / bot tokens / passwords / secrets in code",
+        "Missing .env usage — move secrets to environment variables",
+        "SQL injection (raw queries with f-strings/concat)",
+        "Command injection via os.system / subprocess with user input",
+        "Path traversal in file operations",
+        "Missing admin/user authorization checks on sensitive commands",
+        "Unvalidated user input passed to eval/exec",
+        "Exposed debug endpoints or verbose error messages leaking info",
+        "Insecure deserialization (pickle on user data)",
+        "Missing rate limiting → spam/DoS risk",
+        "Logging sensitive data (tokens, private keys, user PII)"
+      ],
+      "logic_flaws": [
+        "State management broken (FSM / conversation handlers)",
+        "Database not committing / rolling back on error",
+        "Resources not closed (files, DB connections, browser drivers, sessions)",
+        "Memory leaks from unbounded caches/lists",
+        "Stats/counters not updating atomically",
+        "Message edit failures not handled with fallback"
+      ],
+      "performance": [
+        "Blocking I/O in async handlers (use aiohttp / asyncio)",
+        "N+1 database queries",
+        "Heavy computation on main thread",
+        "No connection pooling",
+        "Polling instead of webhooks where applicable"
+      ],
+      "code_quality": [
+        "Duplicated logic (DRY violations)",
+        "Dead/unused code",
+        "Missing type hints",
+        "Inconsistent error handling",
+        "No logging or too much noisy logging"
+      ]
+    }
+  },
+
+  "phase_3_prioritization": {
+    "severity_levels": {
+      "P0_critical": "Secrets exposure, auth bypass, crashes, data loss, injection vulns — FIX FIRST",
+      "P1_high": "Broken commands, state corruption, resource leaks",
+      "P2_medium": "Performance, missing validation, UX bugs",
+      "P3_low": "Code quality, refactoring opportunities"
+    },
+    "rule": "Fix P0 → P1 → P2 → P3 in order. Never skip security issues."
+  },
+
+  "phase_4_fix_implementation": {
+    "rules": [
+      "Fix ONE issue at a time, test, then move to next",
+      "NEVER break existing working features",
+      "Preserve original behavior unless it IS the bug",
+      "Add try/except with specific exceptions + logging (not bare except)",
+      "Move all secrets to .env and use os.getenv()",
+      "Parameterize all DB queries",
+      "Add input validation + sanitization on every user input",
+      "Add authorization decorators for admin commands",
+      "Add rate limiting (per user_id) on expensive operations",
+      "Use context managers (with) for all resources",
+      "Replace blocking calls with async equivalents",
+      "Add meaningful logging at INFO/WARN/ERROR levels"
+    ]
+  },
+
+  "phase_5_verification": {
+    "after_each_fix": [
+      "Run bot locally on Replit",
+      "Test the specific fixed flow end-to-end",
+      "Check logs for new errors",
+      "Verify no regression in other commands"
+    ],
+    "final_check": [
+      "All commands respond correctly",
+      "No secrets in code (grep for 'token', 'api_key', 'password')",
+      "No bare except clauses",
+      "All DB queries parameterized",
+      "Bot survives malformed input without crashing"
+    ]
+  },
+
+  "deliverables": {
+    "1_audit_report": "Markdown file AUDIT.md listing every issue found with: file, line, severity, description, fix applied",
+    "2_fixed_code": "All updated source files with fixes applied",
+    "3_env_template": ".env.example file listing required environment variables",
+    "4_changelog": "Summary of changes grouped by severity",
+    "5_recommendations": "Future improvements not fixed this round (with reasoning)"
+  },
+
+  "constraints": [
+    "DO NOT refactor for style preferences — only fix real issues",
+    "DO NOT add new features",
+    "DO NOT remove working functionality",
+    "DO NOT commit secrets — always use env vars",
+    "ASK user before making architecture-level changes",
+    "If unsure whether something is a bug → log it in AUDIT.md as 'needs review' instead of changing"
+  ],
+
+  "success_criteria": [
+    "Zero hardcoded secrets remain",
+    "Zero unhandled exception paths on common flows",
+    "All user inputs validated",
+    "All admin commands authorized",
+    "Bot runs stable for 10+ minutes under normal usage without crash",
+    "AUDIT.md clearly documents what was found and fixed"
+  ],
+
+  "on_failure": "If a fix breaks something → revert that single change → log it in AUDIT.md as 'blocked: needs deeper investigation' → continue with other fixes. Never leave bot in broken state."
+}
+```

@@ -1,0 +1,137 @@
+```json
+{
+  "role": "Replit Agent - Implement ENH-002 (Premium Inline Buttons UI)",
+  "priority": "HIGH",
+  "task": "Implement the previously approved enhancement ENH-002 — transform the bot's inline keyboards into eye-catchy, attractive, modern, premium-looking UI",
+
+  "context": {
+    "reference": "ENH-002 was suggested and approved in earlier enhancement batch",
+    "scope": "ONLY inline buttons/keyboards visual + UX upgrade — do NOT change underlying command logic",
+    "goal": "Make every inline keyboard feel polished, professional, and visually delightful"
+  },
+
+  "design_principles": {
+    "visual_appeal": [
+      "Use relevant emojis as visual anchors on EVERY button (left-aligned before text)",
+      "Keep button text short, punchy, action-oriented (2-4 words max)",
+      "Use consistent emoji style across the bot (don't mix flat + 3D randomly)",
+      "Add decorative separators/headers in message text above buttons (━━━, ✦, ◆)",
+      "Use Unicode bold/italic in message headers for hierarchy"
+    ],
+    "layout": [
+      "Group related buttons in rows of 2 or 3 for symmetry",
+      "Primary action = full-width single row button",
+      "Secondary actions = 2-column grid",
+      "Navigation (back/home/close) = bottom row, always consistent position",
+      "Max 3 buttons per row to avoid cramping on mobile"
+    ],
+    "hierarchy": [
+      "Primary CTA buttons use bold emojis (🚀 ⚡ 💎 ✨)",
+      "Destructive actions use warning emojis (🗑 ❌ ⚠️) and go in separate row",
+      "Info/help buttons use soft emojis (ℹ️ 💡 📖)",
+      "Toggle states show current status (🟢 ON / 🔴 OFF, ✅ / ⬜)"
+    ],
+    "consistency": [
+      "Same action = same emoji everywhere (e.g. 🔙 Back always, 🏠 Home always)",
+      "Same button order across similar menus",
+      "Unified visual theme (pick ONE style family and stick to it)"
+    ]
+  },
+
+  "emoji_palette_suggestions": {
+    "navigation": "🔙 Back | 🏠 Home | ➡️ Next | ⬅️ Prev | ❌ Close | 🔄 Refresh",
+    "actions": "🚀 Launch | ⚡ Quick | ✅ Confirm | 💾 Save | 📤 Send | 📥 Receive",
+    "settings": "⚙️ Settings | 🔧 Config | 🎛 Controls | 🔔 Notify | 🔕 Mute",
+    "info": "ℹ️ Info | 📊 Stats | 📈 Report | 📖 Help | 💡 Tips",
+    "status": "🟢 Active | 🔴 Inactive | 🟡 Pending | 🔵 Info | ⚪ Neutral",
+    "premium": "💎 Premium | 👑 VIP | ⭐ Star | 🏆 Pro | ✨ Special",
+    "user": "👤 Profile | 👥 Users | 🛡 Admin | 🔐 Security",
+    "danger": "🗑 Delete | ⚠️ Warning | 🚫 Block | ❗ Alert"
+  },
+
+  "message_text_enhancement": {
+    "above_buttons": [
+      "Add clean header with decorative lines: ━━━━━━━━━━━━━━━",
+      "Use bold titles with emoji: 『 ⚙️ SETTINGS PANEL 』",
+      "Short subtitle in italic for context",
+      "Leave blank line between header and buttons for breathing space"
+    ],
+    "example_header_styles": [
+      "╭─────────────────╮\n   💎 PREMIUM MENU\n╰─────────────────╯",
+      "✦ ━━━ ⚡ DASHBOARD ⚡ ━━━ ✦",
+      "◆◇◆  🚀 MAIN MENU  ◆◇◆"
+    ]
+  },
+
+  "implementation_workflow": [
+    "1. SCAN codebase → find ALL InlineKeyboardMarkup / InlineKeyboardBuilder usages",
+    "2. LIST every keyboard location in a table (file, function, purpose)",
+    "3. For each keyboard: redesign with emojis + better layout + consistent style",
+    "4. UPDATE the accompanying message text to match (headers, formatting)",
+    "5. Ensure callback_data values remain UNCHANGED (don't break handlers)",
+    "6. Test each menu visually on Telegram after changes",
+    "7. Create a helper module (e.g. `utils/keyboards.py`) to centralize keyboard builders for consistency and reuse"
+  ],
+
+  "code_quality_rules": [
+    "Create a centralized keyboards.py / ui.py module — don't scatter keyboard code",
+    "Define reusable button factories (e.g. back_button(), home_button(), confirm_button())",
+    "Use constants for repeated emojis (EMOJI_BACK = '🔙')",
+    "Keep callback_data short but descriptive",
+    "Add docstrings to each keyboard builder function",
+    "Do NOT modify command logic, DB calls, or handlers — UI only"
+  ],
+
+  "before_after_example": {
+    "before": {
+      "message": "Choose an option:",
+      "buttons": [
+        "[Settings] [Stats]",
+        "[Help] [Exit]"
+      ]
+    },
+    "after": {
+      "message": "╭━━━━━━━━━━━━━━━━━╮\n   💎 *MAIN MENU*\n╰━━━━━━━━━━━━━━━━━╯\n\n_Select an option below_",
+      "buttons": [
+        "[⚙️ Settings]  [📊 Stats]",
+        "[💡 Help]     [👤 Profile]",
+        "[🏠 Home]     [❌ Close]"
+      ]
+    }
+  },
+
+  "constraints": [
+    "DO NOT change any callback_data strings — handlers depend on them",
+    "DO NOT add new features — only visual upgrade of existing buttons",
+    "DO NOT remove any existing buttons",
+    "DO NOT break the bot's current workflow",
+    "PRESERVE backwards compatibility 100%"
+  ],
+
+  "deliverables": [
+    "1. Centralized keyboards module (utils/keyboards.py or similar)",
+    "2. All existing keyboards refactored with new attractive design",
+    "3. Updated message texts with polished headers/formatting",
+    "4. Short CHANGELOG entry describing the UI upgrade",
+    "5. 2-3 screenshots or text previews showing before/after (as description)"
+  ],
+
+  "verification": [
+    "Every menu still opens correctly",
+    "Every button click still triggers correct action",
+    "No callback_data mismatches / KeyError exceptions",
+    "Visual consistency across ALL menus (same back button, same style)",
+    "Bot feels noticeably more premium and attractive"
+  ],
+
+  "success_criteria": [
+    "User opens any menu → feels 'wow, this looks professional'",
+    "All buttons have fitting emojis and clean text",
+    "Navigation is consistent everywhere",
+    "Zero functional regressions",
+    "Code is cleaner via centralized keyboard module"
+  ],
+
+  "on_completion": "Report back with: list of keyboards updated, new keyboards module path, before/after preview of 2-3 main menus, and confirmation that all callback handlers still work."
+}
+```

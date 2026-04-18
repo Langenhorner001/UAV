@@ -1,0 +1,48 @@
+{
+  "role": "Replit Agent - Selenium Browser Fix",
+  "priority": "CRITICAL",
+  "task": "Fix recurring Chrome/Selenium browser launch failure in bot",
+  "error": {
+    "log": "Browser 3 attempts ke baad bhi launch nahi hua: session not created: DevToolsActivePort file doesn't exist",
+    "root_cause": "Chrome cannot start in Replit's sandboxed environment due to missing flags, /dev/shm limits, or stale user-data-dir"
+  },
+  "workflow": [
+    "1. READ bot logs fully (console + log files) to confirm exact failure point",
+    "2. LOCATE browser/driver init code (search: webdriver.Chrome, ChromeOptions, undetected_chromedriver)",
+    "3. APPLY fix below",
+    "4. RUN bot and MONITOR logs",
+    "5. IF error persists → re-read new logs → iterate fix → repeat until browser launches successfully"
+  ],
+  "mandatory_chrome_options": [
+    "--no-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-gpu",
+    "--headless=new",
+    "--remote-debugging-port=9222",
+    "--disable-extensions",
+    "--disable-setuid-sandbox",
+    "--single-process",
+    "--no-zygote",
+    "--window-size=1920,1080",
+    "--user-data-dir=/tmp/chrome-profile-$(uuidgen)"
+  ],
+  "pre_launch_shell_commands": [
+    "pkill -9 chrome || true",
+    "pkill -9 chromedriver || true",
+    "rm -rf /tmp/.com.google.Chrome* /tmp/chrome-profile-* /tmp/.org.chromium.*"
+  ],
+  "code_requirements": {
+    "retry_logic": "Wrap driver init in try/except with 3 retries + 5s sleep + cleanup between attempts",
+    "unique_profile": "Generate fresh --user-data-dir per launch using uuid/timestamp",
+    "binary_check": "Verify chromium/chrome binary path exists (which chromium or /nix/store/*/bin/chromium)",
+    "version_match": "Ensure chromedriver version matches installed Chrome version"
+  },
+  "replit_specific": {
+    "replit_nix": "Add to replit.nix: pkgs.chromium, pkgs.chromedriver",
+    "env_vars": "Set CHROME_BIN and CHROMEDRIVER_PATH if needed",
+    "use_webdriver_manager": "Consider webdriver-manager or undetected-chromedriver with version_main param"
+  },
+  "success_criteria": "Bot launches browser without DevToolsActivePort error AND completes at least one full workflow cycle",
+  "on_failure": "DO NOT stop. Re-check logs → identify new error → apply targeted fix → retry. Loop until resolved.",
+  "output_expected": "Updated code file(s) + confirmation log showing successful browser session"
+}

@@ -1,0 +1,147 @@
+{
+  "goal": "Perform deep analysis of the Telegram bot codebase, detect and fix all bugs, runtime failures, and security vulnerabilities, and ensure the bot runs reliably in environments like Replit or AWS EC2.",
+  "context": {
+    "project_type": "Python Telegram Bot with automation (browser/proxy usage)",
+    "observed_issues": [
+      "Chrome not launching (/usr/bin/chrome error)",
+      "Repeated retry loops",
+      "Proxy (Tor) instability",
+      "Service crash/rebuild failures"
+    ],
+    "priority": ["stability", "bug fixing", "runtime reliability", "security"]
+  },
+  "instructions": [
+    {
+      "task": "Full project analysis",
+      "details": [
+        "Scan all files (.py, .sh, configs)",
+        "Understand bot flow, commands, and automation logic",
+        "Identify browser automation and proxy usage"
+      ]
+    },
+    {
+      "task": "Detect runtime errors",
+      "details": [
+        "Chrome/Chromium path issues (/usr/bin/chrome not found)",
+        "Missing dependencies (selenium, chromium, drivers)",
+        "Broken subprocess calls",
+        "Environment incompatibility (Replit vs EC2)"
+      ]
+    },
+    {
+      "task": "Fix browser automation",
+      "details": [
+        "Replace hardcoded chrome path with dynamic detection",
+        "Install Chromium if missing",
+        "Use correct driver (chromedriver)",
+        "Add headless mode for server environments",
+        "Add fallback if browser fails to launch"
+      ]
+    },
+    {
+      "task": "Fix retry logic",
+      "details": [
+        "Remove infinite retry loops",
+        "Add retry limit (e.g., max 3 attempts)",
+        "Add exponential backoff delay",
+        "Log failure reason clearly"
+      ]
+    },
+    {
+      "task": "Fix proxy/Tor issues",
+      "details": [
+        "Validate proxy before use",
+        "Handle dead proxies",
+        "Add timeout handling",
+        "Allow fallback to direct connection if proxy fails"
+      ]
+    },
+    {
+      "task": "Security audit",
+      "details": [
+        "Remove hardcoded BOT_TOKEN or secrets",
+        "Move secrets to environment variables",
+        "Sanitize all user inputs",
+        "Prevent command injection or unsafe execution",
+        "Remove unsafe eval/exec usage"
+      ]
+    },
+    {
+      "task": "Improve error handling",
+      "details": [
+        "Wrap critical sections in try/except",
+        "Avoid bot crash on failure",
+        "Return user-friendly error messages",
+        "Log technical errors separately"
+      ]
+    },
+    {
+      "task": "Optimize system compatibility",
+      "details": [
+        "Ensure code runs on Replit and EC2",
+        "Detect OS and adjust paths dynamically",
+        "Handle missing system packages gracefully"
+      ]
+    },
+    {
+      "task": "Refactor code",
+      "details": [
+        "Modularize large functions",
+        "Remove duplicate logic",
+        "Clean unused imports and files",
+        "Improve readability"
+      ]
+    },
+    {
+      "task": "Dependency validation",
+      "details": [
+        "Fix requirements.txt",
+        "Add missing packages (selenium, requests, etc.)",
+        "Remove unused dependencies"
+      ]
+    },
+    {
+      "task": "Testing",
+      "details": [
+        "Run bot after fixes",
+        "Test all commands",
+        "Simulate failure scenarios (browser fail, proxy fail)",
+        "Ensure bot does not crash"
+      ]
+    }
+  ],
+  "critical_fixes": [
+    "Fix /usr/bin/chrome issue",
+    "Prevent infinite retry spam",
+    "Stabilize proxy usage",
+    "Ensure bot runs continuously without crash"
+  ],
+  "fixing_rules": {
+    "preserve_functionality": true,
+    "safe_refactor": true,
+    "no_breaking_changes": true,
+    "fallback_on_failure": true
+  },
+  "output_requirements": {
+    "bug_report": true,
+    "runtime_issues_fixed": true,
+    "security_fixes": true,
+    "updated_files": true,
+    "final_message": "Bot fully fixed, stable, and production-ready"
+  },
+  "validation": {
+    "success_conditions": [
+      "Bot runs without crashing",
+      "Chrome launches successfully or fallback works",
+      "Retry loop controlled",
+      "Proxy failures handled gracefully",
+      "No secrets exposed",
+      "All commands working"
+    ],
+    "error_handling": [
+      "If system dependency missing, auto-install or warn clearly",
+      "If browser fails, switch to fallback mode",
+      "If fix uncertain, log warning instead of breaking code"
+    ]
+  }
+}

@@ -1,0 +1,105 @@
+```json
+{
+  "task": "Debug & fix recurring error in Telegram bot by reading live Replit logs",
+  "priority": "critical",
+  "mode": "iterative_debug_loop",
+  "context": {
+    "situation": "Previous fix attempt applied but error reappeared",
+    "required_action": "Agent must READ actual runtime logs first, then diagnose, then patch",
+    "do_not": "Do NOT guess or assume — base fix strictly on current log output"
+  },
+  "workflow": [
+    {
+      "step": 1,
+      "title": "Read Live Bot Logs",
+      "actions": [
+        "Open Replit Console / Workflow output",
+        "Scroll to latest error traceback",
+        "Capture full stack trace (not just last line)",
+        "Note exact error class, file, line number, and message",
+        "Check for repeating pattern vs one-time error"
+      ]
+    },
+    {
+      "step": 2,
+      "title": "Diagnose Root Cause",
+      "checks": [
+        "Is it same MessageMediaUnsupported error or new one?",
+        "Which tier of fallback failed? (Tier1/2/3/4)",
+        "Is pyrofork actually installed? Run: pip show pyrofork",
+        "Is old pyrogram still cached? Run: pip list | grep -i pyro",
+        "Are session files corrupted or locked?",
+        "Any import errors / missing modules?",
+        "Any FloodWait / AuthKey / PeerId errors?"
+      ]
+    },
+    {
+      "step": 3,
+      "title": "Report Findings Before Fixing",
+      "format": {
+        "error_type": "<exact exception class>",
+        "file_line": "<path:line>",
+        "traceback_summary": "<3-5 line summary>",
+        "failed_tier": "<which fallback tier crashed>",
+        "hypothesis": "<why it's happening>",
+        "proposed_fix": "<1-2 line plan>"
+      }
+    },
+    {
+      "step": 4,
+      "title": "Apply Targeted Fix",
+      "rules": [
+        "Fix ONLY the identified issue — no unrelated refactoring",
+        "Add try/except around the exact failing line",
+        "Log full exception with traceback.format_exc()",
+        "If library issue → reinstall correct version",
+        "If session issue → regenerate cleanly",
+        "If new media type → add handler for that specific class"
+      ]
+    },
+    {
+      "step": 5,
+      "title": "Verify Fix",
+      "actions": [
+        "Restart workflow",
+        "Re-read logs for 30 seconds",
+        "Confirm error gone",
+        "Test on same failing message (id=63)",
+        "Share clean log output as proof"
+      ]
+    },
+    {
+      "step": 6,
+      "title": "If Error Persists → Loop",
+      "instruction": "Return to Step 1, read NEW logs, repeat until fully resolved. Do not stop after one attempt."
+    }
+  ],
+  "logging_requirements": {
+    "add_to_code": [
+      "import traceback",
+      "logger.exception(f'[id={msg.id}] Failed at tier={tier}: {e}')",
+      "Log type(msg.media).__name__ for every unsupported case",
+      "Log pyrofork/pyrogram version at startup"
+    ]
+  },
+  "deliverables": [
+    "Full traceback copy-pasted from Replit logs",
+    "Root cause analysis (1 paragraph)",
+    "Minimal targeted code patch",
+    "Proof of fix: clean log screenshot/text after restart",
+    "Confirmation that id=63 now delivers"
+  ],
+  "constraints": [
+    "Do NOT blindly rewrite working code",
+    "Do NOT skip log-reading step",
+    "Do NOT mark task complete without verification run",
+    "Do NOT delete .session files unless explicitly needed"
+  ],
+  "success_criteria": {
+    "primary": "Bot runs for 5+ minutes without same error",
+    "secondary": "Message id=63 successfully delivered via any tier",
+    "tertiary": "Logs clearly show which tier handled it"
+  },
+  "agent_instructions": "START by running: tail -n 100 on the bot's log output OR check Replit workflow console. Paste the actual error here, THEN propose fix. Repeat loop until bot is stable."
+}
+```

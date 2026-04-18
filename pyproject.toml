@@ -1,0 +1,15 @@
+[project]
+name = "repl-nix-workspace"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.11"
+dependencies = [
+    "blinker==1.5",
+    "psutil>=5.9.0",
+    "python-telegram-bot>=20.0",
+    "requests[socks]>=2.31.0",
+    "selenium>=4.0.0",
+    "selenium-wire>=5.1.0",
+    "stem>=1.8.0",
+    "webdriver-manager>=4.0.0",
+]
