@@ -149,12 +149,13 @@ async def _auth_middleware(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text("⛔ Access denied. You are not authorized to use this bot.")
         logger.warning(f"Unauthorized access attempt: user_id={uid}, name={update.effective_user.full_name!r}")
         raise ApplicationHandlerStop
-    # Auto-register user in DB on first contact
-    db.add_user(uid)
+    # Auto-register user in DB on first contact (DB calls run in thread to avoid blocking event loop)
+    import asyncio as _aio
+    await _aio.to_thread(db.add_user, uid)
     # Track presence in access registry too (for role/last_active)
     try:
         u = update.effective_user
-        access.touch_user(uid, u.username or "", u.first_name or "")
+        await _aio.to_thread(access.touch_user, uid, u.username or "", u.first_name or "")
     except Exception as _ex:
         logger.debug(f"access.touch_user failed for {uid}: {_ex}")
 
@@ -162,9 +163,9 @@ async def _auth_middleware(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # ── Access control gates (role-based) ───────────────────────────────
     # Owner bypasses every gate below.
-    if not access.is_owner(uid, OWNER_ID):
+    if not await _aio.to_thread(access.is_owner, uid, OWNER_ID):
         # 1. Banned users → hard block
-        if access.is_banned(uid):
+        if await _aio.to_thread(access.is_banned, uid):
             if update.message and cmd_name:
                 await update.message.reply_text(
                     "🚫 Aap is bot se ban kar diye gaye hain.\n"
@@ -172,7 +173,7 @@ async def _auth_middleware(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 )
             raise ApplicationHandlerStop
 
-        role = access.get_role(uid, OWNER_ID)  # auto-downgrades expired users
+        role = await _aio.to_thread(access.get_role, uid, OWNER_ID)  # auto-downgrades expired users
 
         # 2. Owner-only commands → block non-owners
         if cmd_name in _OWNER_ONLY_CMDS:
@@ -195,10 +196,10 @@ async def _auth_middleware(update: Update, context: ContextTypes.DEFAULT_TYPE):
         # 4. GUEST → only allow whitelist (start/help/redeem/myaccess/menu/ping)
         if role == access.ROLE_GUEST and cmd_name and cmd_name not in access.GUEST_ALLOWED_CMDS:
             if update.message:
-                owner_link = access.get_owner_display(OWNER_ID, OWNER_USERNAME)
+                owner_link = await _aio.to_thread(access.get_owner_display, OWNER_ID, OWNER_USERNAME)
                 # If still no owner exists anywhere, hint the bootstrap path
                 no_owner_hint = ""
-                if OWNER_ID is None and access.count_owners_db() == 0:
+                if OWNER_ID is None and await _aio.to_thread(access.count_owners_db) == 0:
                     no_owner_hint = (
                         "\n\n⚙️  *Setup pending:*\n"
                         "_Agar aap is bot ke owner hain to_ `/claimowner` _bhejein._"
@@ -546,30 +547,37 @@ class VisitorSession:
 
 
 _sessions: dict[int, VisitorSession] = {}
+_sessions_lock = threading.Lock()
 
 
 def get_session(user_id: int) -> VisitorSession:
-    if user_id not in _sessions:
-        s = VisitorSession()
-        data = db.load_user(user_id)
-        if data:
-            s.url                = data.get("url", "")
-            s.click_text         = data.get("click_text", "")
-            s.click_text2        = data.get("click_text2", "")
-            s.primary_selector   = data.get("primary_selector", "")
-            s.secondary_selector = data.get("secondary_selector", "")
-            s.delay              = float(data.get("delay", 5.0))
-            s.page_load_wait     = float(data.get("page_load_wait", 5.0))
-            s.loops              = int(data.get("loops", 0))
-            s.timeout            = int(data.get("timeout", 30))
-            s.proxies            = data.get("proxies", [])
-            s.identity_mode      = bool(data.get("identity_mode", 1))
-            s.circuit_mode       = bool(data.get("circuit_mode", 0))
-            s.tor_mode           = bool(data.get("tor_mode", 0))
-            s.break_interval     = int(data.get("break_interval", 50))
-            s.break_duration     = int(data.get("break_duration", 60))
-        _sessions[user_id] = s
-    return _sessions[user_id]
+    # Thread-safe: handlers (asyncio thread) + /health (HTTP thread) both touch _sessions.
+    with _sessions_lock:
+        if user_id in _sessions:
+            return _sessions[user_id]
+    s = VisitorSession()
+    data = db.load_user(user_id)
+    if data:
+        s.url                = data.get("url", "")
+        s.click_text         = data.get("click_text", "")
+        s.click_text2        = data.get("click_text2", "")
+        s.primary_selector   = data.get("primary_selector", "")
+        s.secondary_selector = data.get("secondary_selector", "")
+        s.delay              = float(data.get("delay", 5.0))
+        s.page_load_wait     = float(data.get("page_load_wait", 5.0))
+        s.loops              = int(data.get("loops", 0))
+        s.timeout            = int(data.get("timeout", 30))
+        s.proxies            = data.get("proxies", [])
+        s.identity_mode      = bool(data.get("identity_mode", 1))
+        s.circuit_mode       = bool(data.get("circuit_mode", 0))
+        s.tor_mode           = bool(data.get("tor_mode", 0))
+        s.break_interval     = int(data.get("break_interval", 50))
+        s.break_duration     = int(data.get("break_duration", 60))
+    with _sessions_lock:
+        # Re-check in case another thread populated meanwhile
+        if user_id not in _sessions:
+            _sessions[user_id] = s
+        return _sessions[user_id]
 
 
 def _save_session(user_id: int, session: VisitorSession):
@@ -1941,6 +1949,43 @@ async def cmd_stats(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("\n".join(lines), parse_mode="Markdown")
 
 
+_ALLOW_PRIVATE_URLS = os.environ.get("ALLOW_PRIVATE_URLS", "false").lower() in ("1", "true", "yes")
+
+def _is_private_or_local_host(host: str) -> bool:
+    """SSRF guard: refuse loopback, link-local, private, or metadata-service hosts."""
+    import ipaddress, socket as _sock
+    h = (host or "").strip().lower()
+    if not h:
+        return True
+    # Block known cloud-metadata hostnames / suspicious labels
+    if h in ("localhost", "metadata.google.internal") or h.endswith(".local") or h.endswith(".internal"):
+        return True
+    # Try literal IP first
+    try:
+        ip = ipaddress.ip_address(h)
+        return ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast or h == "169.254.169.254"
+    except ValueError:
+        pass
+    # Resolve hostname → block if any A record is private
+    try:
+        infos = _sock.getaddrinfo(h, None)
+        for info in infos:
+            addr = info[4][0]
+            try:
+                ip = ipaddress.ip_address(addr)
+                if ip.is_private or ip.is_loopback or ip.is_link_local or ip.is_reserved or ip.is_multicast:
+                    return True
+                if addr == "169.254.169.254":
+                    return True
+            except ValueError:
+                continue
+    except Exception:
+        # DNS resolution failed → fail-closed for SSRF safety.
+        # Block by default; user can retry with valid host or set ALLOW_PRIVATE_URLS=true.
+        return True
+    return False
+
+
 async def cmd_set_url(update: Update, context: ContextTypes.DEFAULT_TYPE):
     session = get_session(update.effective_user.id)
     if not context.args:
@@ -1949,6 +1994,20 @@ async def cmd_set_url(update: Update, context: ContextTypes.DEFAULT_TYPE):
     url = context.args[0].strip()
     if not url.startswith(("http://", "https://")):
         url = "https://" + url
+    # SSRF guard: block private / loopback / metadata hosts unless explicitly allowed
+    if not _ALLOW_PRIVATE_URLS:
+        try:
+            from urllib.parse import urlparse
+            host = (urlparse(url).hostname or "").strip()
+            if _is_private_or_local_host(host):
+                await update.message.reply_text(
+                    "⛔ Yeh URL block hai (private/loopback/internal address).\n"
+                    "Owner agar zaroori ho to `ALLOW_PRIVATE_URLS=true` set kar ke restart kare."
+                )
+                _audit(update.effective_user.id, "set_url_blocked", url[:120])
+                return
+        except Exception as ex:
+            logger.warning(f"set_url SSRF check failed: {ex}")
     session.url = url
     _save_session(update.effective_user.id, session)
     _audit(update.effective_user.id, "set_url", url[:120])
@@ -2042,7 +2101,17 @@ async def cmd_list_proxies(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Koi proxy nahi hai. /addpxy se add karo.")
         return
     lines = [f"{i}. {p.split('@')[-1] if '@' in p else p}" for i, p in enumerate(session.proxies, 1)]
-    await update.message.reply_text("Proxies:\n" + "\n".join(lines))
+    # Telegram 4096-char limit — chunk into multiple messages
+    header = "Proxies:\n"
+    chunk = header
+    for line in lines:
+        entry = line + "\n"
+        if len(chunk) + len(entry) > 3900:
+            await update.message.reply_text(chunk.rstrip())
+            chunk = ""
+        chunk += entry
+    if chunk.strip():
+        await update.message.reply_text(chunk.rstrip())
 
 
 async def cmd_clear_proxies(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -3186,32 +3255,38 @@ async def cmd_backup(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if OWNER_ID is None or uid != OWNER_ID:
         await update.message.reply_text("⛔ Sirf owner is command ko use kar sakta hai.")
         return
-    import gzip, shutil as _sh, tempfile
+    import gzip, shutil as _sh, tempfile, asyncio as _aio
     src = db.DB_PATH if hasattr(db, "DB_PATH") else "bot_data.db"
     if not os.path.isfile(src):
         await update.message.reply_text(f"DB file nahi mili: {src}")
         return
     ts = time.strftime("%Y%m%d_%H%M%S")
     out = f"/tmp/bot_backup_{ts}.db.gz"
-    try:
-        # Copy first to avoid locking issues, then gzip
+
+    def _do_backup() -> tuple[str, float]:
+        # Copy first to avoid locking issues, then gzip — runs off the event loop
         with tempfile.NamedTemporaryFile(delete=False, suffix=".db") as tmp:
             tmp_path = tmp.name
-        _sh.copy2(src, tmp_path)
-        with open(tmp_path, "rb") as fin, gzip.open(out, "wb", compresslevel=6) as fout:
-            _sh.copyfileobj(fin, fout)
         try:
-            os.remove(tmp_path)
-        except Exception:
-            pass
-        size_kb = os.path.getsize(out) / 1024
-        with open(out, "rb") as f:
+            _sh.copy2(src, tmp_path)
+            with open(tmp_path, "rb") as fin, gzip.open(out, "wb", compresslevel=6) as fout:
+                _sh.copyfileobj(fin, fout)
+        finally:
+            try:
+                os.remove(tmp_path)
+            except Exception:
+                pass
+        return out, os.path.getsize(out) / 1024
+
+    try:
+        out_path, size_kb = await _aio.to_thread(_do_backup)
+        with open(out_path, "rb") as f:
             await update.message.reply_document(
                 document=f,
-                filename=os.path.basename(out),
+                filename=os.path.basename(out_path),
                 caption=f"📦 Backup ({size_kb:.1f} KB) — {ts}",
             )
-        _audit(uid, "backup", f"file={os.path.basename(out)} size={size_kb:.1f}KB")
+        _audit(uid, "backup", f"file={os.path.basename(out_path)} size={size_kb:.1f}KB")
     except Exception as ex:
         logger.error(f"Backup failed: {ex}")
         await update.message.reply_text(f"❌ Backup fail hua: {ex}")
@@ -3262,8 +3337,11 @@ async def cmd_audit(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Audit log abhi khali hai.")
         return
     try:
-        with open(_AUDIT_FILE, "r", encoding="utf-8", errors="ignore") as f:
-            lines = f.readlines()
+        import asyncio as _aio
+        def _read_tail():
+            with open(_AUDIT_FILE, "r", encoding="utf-8", errors="ignore") as f:
+                return f.readlines()
+        lines = await _aio.to_thread(_read_tail)
         tail = lines[-n:]
         if not tail:
             await update.message.reply_text("Koi entries nahi hain.")
@@ -3298,13 +3376,16 @@ def _health_payload() -> dict:
             _c.execute("SELECT 1").fetchone()
     except Exception as ex:
         db_ok = f"err: {ex}"
-    active = sum(1 for s in _sessions.values() if getattr(s, "running", False))
+    with _sessions_lock:
+        snapshot = list(_sessions.values())
+        total_sessions = len(_sessions)
+    active = sum(1 for s in snapshot if getattr(s, "running", False))
     return {
         "status": "ok" if db_ok == "ok" else "degraded",
         "db": db_ok,
         "uptime_s": int(time.time() - _BOT_BOOT_TS),
         "active_sessions": active,
-        "total_sessions": len(_sessions),
+        "total_sessions": total_sessions,
         "mem_pct": mem_pct,
         "maint_mode": _MAINT_MODE,
     }

@@ -51,8 +51,19 @@ def _write_torrc(hashed: str):
         f"MaxCircuitDirtiness 10\n"
         f"NewCircuitPeriod 10\n"
     )
-    with open(TORRC_PATH, "w") as f:
-        f.write(torrc)
+    # Write with restrictive perms — torrc contains the hashed control-port password
+    fd = os.open(TORRC_PATH, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    try:
+        with os.fdopen(fd, "w") as f:
+            f.write(torrc)
+    except Exception:
+        try: os.close(fd)
+        except Exception: pass
+        raise
+    try:
+        os.chmod(TORRC_PATH, 0o600)
+    except Exception:
+        pass
 
 
 def start(timeout: int = 45) -> bool:

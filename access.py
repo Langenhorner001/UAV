@@ -79,6 +79,7 @@ _CODE_GROUP_LEN = 4
 # Same audit file as bot.py uses
 _AUDIT_FILE = "/tmp/uav-audit.log"
 _audit_lock = threading.Lock()
+_bootstrap_lock = threading.Lock()
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────
@@ -121,8 +122,14 @@ def audit(uid: int, action: str, details: str = ""):
         if details:
             line += f"  | {details.replace(chr(10), ' ')[:200]}"
         with _audit_lock:
+            existed = os.path.isfile(_AUDIT_FILE)
             with open(_AUDIT_FILE, "a", encoding="utf-8") as f:
                 f.write(line + "\n")
+            if not existed:
+                try:
+                    os.chmod(_AUDIT_FILE, 0o600)
+                except Exception:
+                    pass
     except Exception as ex:
         logger.debug(f"access.audit write failed: {ex}")
 
@@ -239,20 +246,29 @@ def first_owner_db() -> Optional[dict]:
 
 
 def bootstrap_owner(uid: int, username: str = "", first_name: str = "") -> bool:
-    """Promote user to OWNER if no OWNER exists yet (env nor DB). Returns True if promoted."""
-    if count_owners_db() > 0:
-        return False
-    touch_user(uid, username, first_name)
-    with _get_conn() as conn:
-        conn.execute(
-            "UPDATE bot_users SET role='OWNER', added_by=?, added_at=?, "
-            "expires_at=NULL, is_banned=0 WHERE user_id=?",
-            (uid, _now_ts(), uid),
-        )
-        conn.commit()
-    audit(uid, "bootstrap_owner", f"uid={uid} username={username}")
-    logger.info(f"access: bootstrap OWNER -> uid={uid} (@{username})")
-    return True
+    """Promote user to OWNER if no OWNER exists yet (env nor DB). Returns True if promoted.
+
+    Thread-safe via _bootstrap_lock — prevents two near-simultaneous /claimowner calls
+    from both succeeding.
+    """
+    with _bootstrap_lock:
+        if count_owners_db() > 0:
+            return False
+        touch_user(uid, username, first_name)
+        with _get_conn() as conn:
+            # Atomic guard: only promote if there is still no OWNER row
+            cur = conn.execute(
+                "UPDATE bot_users SET role='OWNER', added_by=?, added_at=?, "
+                "expires_at=NULL, is_banned=0 "
+                "WHERE user_id=? AND NOT EXISTS (SELECT 1 FROM bot_users WHERE role='OWNER')",
+                (uid, _now_ts(), uid),
+            )
+            conn.commit()
+            if cur.rowcount == 0:
+                return False
+        audit(uid, "bootstrap_owner", f"uid={uid} username={username}")
+        logger.info(f"access: bootstrap OWNER -> uid={uid} (@{username})")
+        return True
 
 
 def get_owner_display(env_owner_id: Optional[int] = None,
