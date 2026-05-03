@@ -1,0 +1,25 @@
+# UAV local environment
+# Fill real values here. This file is ignored by git and must not be committed.
+
+# Telegram
+BOT_TOKEN=2008564515:AAHQdeOTfSd5BBHkWEks49mjexiFjwp3bWA
+OWNER_ID=1053939190
+ALLOWED_USERS=
+
+# Browser paths, leave blank for auto-detection
+CHROMIUM_PATH=/usr/local/bin/uav-chrome
+CHROMEDRIVER_PATH=/usr/local/bin/uav-chromedriver
+
+# keep_alive / self-pinger
+SELF_PING_ENABLED=false
+ALLOW_PRIVATE_URLS=false
+
+# Deploy / GitHub
+GITHUB_TOKEN=
+EC2_HOST=155.117.46.181
+EC2_USER=administrator
+EC2_DEPLOY_PATH=/home/administrator/UAV
+EC2_SERVICE=visitor-bot
+EC2_SSH_PASSWORD=@Crackify456
+EC2_SSH_KEY_PATH=
+TOR_PASSWORD=3bGEICIGsscX04pBwpYK41S4z9iMRbsXaFpz1WCjjlY
