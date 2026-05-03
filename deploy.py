@@ -17,10 +17,30 @@ Requires (in bot/.env):
 
 import os
 import sys
+import shlex
 import shutil
 import subprocess
 import datetime
 from pathlib import Path
+
+HERE = Path(__file__).resolve().parent
+
+
+def _early_load_env():
+    """Load .env BEFORE reading EC2_* defaults below.
+    Without this, hardcoded fallback host/user are used even when .env overrides them."""
+    env_file = HERE / ".env"
+    if not env_file.exists():
+        return
+    for line in env_file.read_text().splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+
+
+_early_load_env()
 
 # ── Config (override via .env or env vars) ───────────────────────────────────
 REPO_URL        = "https://github.com/Langenhorner001/Auto-TGBot-Clicker.git"
@@ -32,8 +52,6 @@ EC2_SERVICE     = os.environ.get("EC2_SERVICE", "visitor-bot")
 
 # Critical files that MUST update on every deploy (verification list)
 VERIFY_FILES    = ["bot.py"]
-
-HERE = Path(__file__).resolve().parent
 
 # Files/dirs we never want to overwrite on EC2 or push to GitHub
 EXCLUDES = [
@@ -299,14 +317,18 @@ def deploy_to_ec2():
         except ValueError:
             new_mtime, new_size = 0, 0
 
-        old_mtime = pre_mtimes.get(fname, 0)
-        mtime_ok  = new_mtime >= pre_deploy_ts
+        old_mtime  = pre_mtimes.get(fname, 0)
+        local_mtime = int(local_path.stat().st_mtime)
+        # tar preserves source mtime on extract, so remote mtime ≈ local mtime
+        # (NOT >= pre_deploy_ts). Trust size + (mtime changed OR mtime ≈ local mtime).
         size_ok   = new_size == local_size
-        unchanged = new_mtime == old_mtime and old_mtime != 0
+        mtime_changed = new_mtime != old_mtime
+        mtime_matches_local = abs(new_mtime - local_mtime) <= 2
+        unchanged = (not mtime_changed) and (not mtime_matches_local) and old_mtime != 0
 
-        status = (f"  {fname}: mtime {old_mtime} → {new_mtime}  "
+        status = (f"  {fname}: mtime {old_mtime} → {new_mtime} (local {local_mtime})  "
                   f"size local={local_size} remote={new_size}")
-        if mtime_ok and size_ok:
+        if size_ok and (mtime_changed or mtime_matches_local):
             log(status + "  ✅", G)
         elif unchanged:
             log(status + "  ❌ NOT UPDATED (file unchanged on remote!)", R)
@@ -322,16 +344,20 @@ def deploy_to_ec2():
             f"but deploy.py defaulted to /home/ubuntu/...", Y)
         return False
 
-    # Restart service
+    # Restart service. If user requires a sudo password, pipe EC2_SSH_PASSWORD via `sudo -S`.
     log(f"Restarting service: {EC2_SERVICE} ...", C)
-    r = subprocess.run(
-        ssh_cmd + [
-            f"sudo systemctl restart {EC2_SERVICE} && "
-            f"sleep 2 && "
-            f"systemctl is-active {EC2_SERVICE} && "
-            f"systemctl status {EC2_SERVICE} --no-pager -n 5"
-        ],
+    sudo_pwd = os.environ.get("EC2_SUDO_PASSWORD", "").strip() or pwd
+    if sudo_pwd:
+        sudo_prefix = f"echo {shlex.quote(sudo_pwd)} | sudo -S -p ''"
+    else:
+        sudo_prefix = "sudo -n"
+    remote_restart = (
+        f"{sudo_prefix} systemctl restart {EC2_SERVICE} && "
+        f"sleep 2 && "
+        f"systemctl is-active {EC2_SERVICE} && "
+        f"systemctl status {EC2_SERVICE} --no-pager -n 5"
     )
+    r = subprocess.run(ssh_cmd + [remote_restart])
     if r.returncode != 0:
         log("Service restart failed ❌", R)
         return False

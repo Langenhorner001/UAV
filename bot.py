@@ -1192,10 +1192,30 @@ def _run_loop(session: VisitorSession, send_msg, edit_msg):
         return p
 
     driver = None
-    MAX_CONSECUTIVE_FAILS  = 5   # loop-level errors before cooldown
+    # Loop-level errors before cooldown. Configurable via env (default 10).
+    # Tor exits often drop mid-load (ERR_CONNECTION_CLOSED) — keep this generous.
+    try:
+        MAX_CONSECUTIVE_FAILS = max(1, int(os.environ.get("MAX_CONSECUTIVE_FAILS", "10")))
+    except ValueError:
+        MAX_CONSECUTIVE_FAILS = 10
     MAX_LAUNCH_FAILS       = 3   # consecutive browser-launch failures before hard stop
     consecutive_fails      = 0   # resets on successful loop
     consecutive_launch_fails = 0 # resets on successful browser start
+
+    # Transient browser/network errors that usually indicate a bad Tor exit or
+    # flaky proxy rather than a real bug. On Tor we rotate the circuit before retrying.
+    _TRANSIENT_NET_PATTERNS = (
+        "ERR_CONNECTION_CLOSED",
+        "ERR_CONNECTION_RESET",
+        "ERR_CONNECTION_REFUSED",
+        "ERR_CONNECTION_TIMED_OUT",
+        "ERR_TIMED_OUT",
+        "ERR_TUNNEL_CONNECTION_FAILED",
+        "ERR_PROXY_CONNECTION_FAILED",
+        "ERR_SOCKS_CONNECTION_FAILED",
+        "ERR_EMPTY_RESPONSE",
+        "ERR_NAME_NOT_RESOLVED",
+    )
 
     def _kill_leftover_browsers():
         """Kill leftover chromedriver + chromium processes and clean temp profile dirs."""
@@ -1552,12 +1572,21 @@ def _run_loop(session: VisitorSession, send_msg, edit_msg):
                         logger.info(f"Proxy rotated → {proxy_label_short(new_actual)}")
 
             except Exception as e:
-                session.last_error = str(e)[:100]
+                err_str = str(e)
+                session.last_error = err_str[:100]
                 session.last_status = "Error"
-                err_short = str(e)[:120]
+                err_short = err_str[:120]
                 session.error_count += 1
+
+                # Transient network errors are usually a bad Tor exit / flaky proxy.
+                # We still count them, but we'll auto-recover by rotating the Tor circuit.
+                is_transient = any(p in err_str for p in _TRANSIENT_NET_PATTERNS)
                 consecutive_fails += 1
-                logger.error(f"Loop #{loop_num} error (fail #{consecutive_fails}/{MAX_CONSECUTIVE_FAILS}): {e}")
+
+                logger.error(
+                    f"Loop #{loop_num} error (fail #{consecutive_fails}/{MAX_CONSECUTIVE_FAILS}, "
+                    f"transient={is_transient}): {e}"
+                )
 
                 if consecutive_fails >= MAX_CONSECUTIVE_FAILS:
                     send_msg(
@@ -1567,19 +1596,33 @@ def _run_loop(session: VisitorSession, send_msg, edit_msg):
                     )
                     break
 
+                # Tor mode + transient network error → request a fresh circuit
+                # before rebuilding the browser. Otherwise we just hit the same bad exit again.
+                tor_rotated = False
+                if use_tor and is_transient:
+                    try:
+                        tor_manager.new_circuit()
+                        tor_rotated = True
+                    except Exception as _tex:
+                        logger.warning(f"new_circuit() failed during error recovery: {_tex}")
+
+                wait_secs = 15
                 send_msg(
                     f"⚠️ Loop #{loop_num} ERROR ({consecutive_fails}/{MAX_CONSECUTIVE_FAILS})\n"
                     f"Proxy: {proxy_disp}\nError: {err_short}\n"
-                    f"15s mein browser restart hoga..."
+                    + ("🔄 Tor circuit rotated. " if tor_rotated else "")
+                    + f"{wait_secs}s mein browser restart hoga..."
                 )
 
-                if not _sleep_check(15, session._stop_event):
+                if not _sleep_check(wait_secs, session._stop_event):
                     break
 
                 _safe_quit(driver)
                 driver = None
-                # Next iteration ka driver is None block rebuild handle karega
-                current_proxy = next(proxy_cycle)
+                # Next iteration ka driver is None block rebuild handle karega.
+                # Non-Tor mode: rotate to next proxy in pool.
+                if not use_tor:
+                    current_proxy = next(proxy_cycle)
 
     except Exception as e:
         session.last_error = str(e)[:100]
